@@ -193,24 +193,13 @@
       height: 60px;
       z-index: 95;
       cursor: pointer;
-      transition: top 0.55s cubic-bezier(0.34, 1.56, 0.64, 1), left 0.55s cubic-bezier(0.34, 1.56, 0.64, 1);
       filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.15));
       user-select: none;
-    }
-
-    .mini-frog.bouncing {
-      animation: frogBounce 0.55s ease;
-    }
-
-    @keyframes frogBounce {
-      0% { transform: scale(1) translateY(0); }
-      35% { transform: scale(1.2, 0.85) translateY(-28px) rotate(-10deg); }
-      70% { transform: scale(0.95, 1.1) translateY(6px) rotate(8deg); }
-      100% { transform: scale(1) translateY(0) rotate(0deg); }
+      transform-origin: 50% 100%;
     }
 
     .mini-frog:hover {
-      transform: scale(1.12);
+      transform: scale(1.1);
     }
 
     /* Section Hero */
@@ -720,6 +709,90 @@
       gap: 16px;
     }
 
+    /* Grille des créneaux (Réserver un créneau) */
+    .slots-title {
+      font-weight: 800;
+      font-size: 0.95rem;
+      color: var(--navy);
+    }
+
+    .slots-note {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #64748B;
+      margin-top: -8px;
+    }
+
+    .slots-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .slot-row {
+      display: grid;
+      grid-template-columns: 105px repeat(3, 1fr);
+      gap: 8px;
+      align-items: center;
+    }
+
+    .slot-day {
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    .slot-chip {
+      position: relative;
+      display: block;
+      cursor: pointer;
+    }
+
+    .slot-chip input {
+      position: absolute;
+      opacity: 0;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      cursor: pointer;
+    }
+
+    .slot-chip span {
+      display: block;
+      text-align: center;
+      padding: 0.55rem 0.3rem;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      background: var(--white);
+      font-weight: 700;
+      font-size: 0.88rem;
+      transition: all 0.18s;
+    }
+
+    .slot-chip:hover span {
+      border-color: var(--navy);
+      background: #FFF8E7;
+    }
+
+    .slot-chip input:checked + span {
+      background: var(--mint);
+      border-color: var(--navy);
+      box-shadow: 2px 2px 0px var(--navy);
+    }
+
+    .slot-chip input:focus-visible + span {
+      outline: 3px solid var(--blue);
+      outline-offset: 2px;
+    }
+
+    .hp-field {
+      position: absolute;
+      left: -9999px;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+
     .form-feedback {
       display: none;
       background: #ECFDF5;
@@ -729,6 +802,12 @@
       border-radius: 12px;
       font-weight: 700;
       text-align: center;
+    }
+
+    .form-feedback.error {
+      background: #FEF2F2;
+      border-color: var(--coral);
+      color: #991B1B;
     }
 
     .whatsapp-btn {
@@ -760,12 +839,22 @@
       gap: 0.9rem;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
       border: 2px solid var(--border);
-      transition: border-color 0.2s, transform 0.2s;
+      cursor: pointer;
+      transition: border-color 0.2s, background-color 0.2s;
     }
 
-    .trousse-item:hover {
-      border-color: var(--blue);
-      transform: translateY(-3px);
+    .trousse-item:has(.trousse-check:checked) {
+      background: #ECFDF5;
+      border-color: var(--mint);
+    }
+
+    .trousse-check {
+      width: 22px;
+      height: 22px;
+      margin-top: 0.15rem;
+      flex-shrink: 0;
+      accent-color: var(--mint);
+      cursor: pointer;
     }
 
     .trousse-item span.emoji {
@@ -801,6 +890,15 @@
       }
       .form-row {
         grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .slot-row {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .slot-day {
+        grid-column: 1 / -1;
       }
     }
   </style>
@@ -844,7 +942,7 @@
       <p data-fr="Ici, pas de cours magistraux ennuyeux ! On pratique, on échange et on s'amuse pour faire vivre la langue française avec le sourire." data-en="No boring lectures here! We practice, exchange, and have fun to bring the French language to life with a smile.">Ici, pas de cours magistraux ennuyeux ! On pratique, on échange et on s'amuse pour faire vivre la langue française avec le sourire.</p>
       <div class="cta-group">
         <a href="#quiz" class="btn btn-primary" data-fr="🎯 Tester mon niveau" data-en="🎯 Test my level">🎯 Tester mon niveau</a>
-        <a href="#contact" class="btn btn-secondary" data-fr="📅 Réserver un cours" data-en="📅 Book a lesson">📅 Réserver un cours</a>
+        <a href="#contact" class="btn btn-secondary" onclick="preselectMotif('reserver')" data-fr="📅 Réserver un cours" data-en="📅 Book a lesson">📅 Réserver un cours</a>
       </div>
     </div>
 
@@ -1002,17 +1100,18 @@
     <div class="contact-grid">
       <div class="contact-card">
         <h3 style="margin-bottom: 1.2rem;" data-fr="✉️ Me contacter / Demander un devis" data-en="✉️ Contact me / Request a Quote">✉️ Me contacter / Demander un devis</h3>
-        <form id="contactForm" onsubmit="handleFormSubmit(event)">
+        <form id="contactForm" onsubmit="handleFormSubmit(event)" autocomplete="off">
           <div class="form-group">
             <label for="userMotif" data-fr="Motif de votre demande" data-en="Reason for your request">Motif de votre demande</label>
-            <select id="userMotif" onchange="handleMotifChange()" required>
-              <option value="info" data-fr="Demande d'information" data-en="Information request">Demande d'information</option>
+            <select id="userMotif" onchange="handleMotifChange()" autocomplete="off" required>
+              <option value="info" selected data-fr="Demande d'information" data-en="Information request">Demande d'information</option>
+              <option value="reserver" data-fr="Réserver un créneau" data-en="Book a time slot">Réserver un créneau</option>
               <option value="cours" data-fr="Commencer les cours de français" data-en="Start French lessons">Commencer les cours de français</option>
               <option value="devis" data-fr="Demande de devis" data-en="Quote request">Demande de devis</option>
             </select>
           </div>
 
-          <!-- Champs dynamiques si "Commencer les cours de français" -->
+          <!-- Champs dynamiques si "Réserver un créneau" ou "Commencer les cours de français" -->
           <div id="coursFields" class="conditional-fields">
             <div class="form-group">
               <label for="userFormat" data-fr="Format préféré" data-en="Preferred Format">Format préféré</label>
@@ -1021,6 +1120,12 @@
                 <option value="Cours en groupe en ligne (4+ élèves)" data-fr="Cours en groupe en ligne (4+ élèves)" data-en="Online Group Lessons (4+ students)">Cours en groupe en ligne (4+ élèves)</option>
               </select>
             </div>
+          </div>
+
+          <!-- Champs dynamiques si "Réserver un créneau" : grille jours x périodes -->
+          <div id="slotsFields" class="conditional-fields">
+            <span class="slots-title" data-fr="Choisissez vos créneaux (plusieurs choix possibles)" data-en="Choose your time slots (multiple choices allowed)">Choisissez vos créneaux (plusieurs choix possibles)</span>
+            <div class="slots-grid" id="slotsGrid"></div>
           </div>
 
           <!-- Champs dynamiques si "Demande de devis" -->
@@ -1058,14 +1163,9 @@
               <input type="email" id="userEmail" required placeholder="sarah@gmail.com">
             </div>
             <div class="form-group">
-              <label for="userLevel" data-fr="Niveau de français" data-en="Niveau de français">Niveau de français</label>
+              <label for="userLevel" data-fr="Niveau de français" data-en="French level">Niveau de français</label>
               <input type="text" id="userLevel" placeholder="Ex: Débutant / Intermédiaire">
             </div>
-          </div>
-
-          <div class="form-group">
-            <label for="userSlots" data-fr="Créneaux souhaités (jours / heures)" data-en="Preferred time slots (days / hours)">Créneaux souhaités (jours / heures)</label>
-            <input type="text" id="userSlots" placeholder="Ex: Mardi et jeudi matin, 9h30 (heure du Caire)">
           </div>
 
           <div class="form-group">
@@ -1073,21 +1173,27 @@
             <textarea id="userMessage" rows="3" placeholder="Bonjour ! Je souhaite..."></textarea>
           </div>
 
-          <button type="submit" class="btn btn-primary" style="width: 100%;" data-fr="Envoyer ma demande" data-en="Send Request">Envoyer ma demande</button>
+          <!-- Champ piège anti-spam (invisible pour les humains) -->
+          <div class="hp-field" aria-hidden="true">
+            <label for="userWebsite">Ne pas remplir</label>
+            <input type="text" id="userWebsite" name="_gotcha" tabindex="-1" autocomplete="off">
+          </div>
+
+          <button type="submit" id="submitBtn" class="btn btn-primary" style="width: 100%;" data-fr="Envoyer ma demande" data-en="Send Request">Envoyer ma demande</button>
           <div id="formFeedback" class="form-feedback"></div>
         </form>
       </div>
 
       <div class="contact-card" style="display: flex; flex-direction: column; justify-content: space-between; gap: 1.5rem;">
         <div>
-          <h3 style="margin-bottom: 0.8rem;" data-fr="🗓️ Comment ça se passe ?" data-en="🗓️ How does it work?">🗓️ Comment ça se passe ?</h3>
+          <h3 style="margin-bottom: 0.8rem;" data-fr="🗓️ Comment réserver un cours ?" data-en="🗓️ How to book a lesson?">🗓️ Comment réserver un cours ?</h3>
           <p style="color: #475569;" data-fr="Indiquez vos disponibilités dans le formulaire ci-contre. Je vérifie mon planning et je reviens vers vous très rapidement pour confirmer votre créneau !" data-en="Share your availability in the form next to this. I'll check my schedule and get back to you very soon to confirm your slot!">Indiquez vos disponibilités dans le formulaire ci-contre. Je vérifie mon planning et je reviens vers vous très rapidement pour confirmer votre créneau !</p>
         </div>
 
         <div style="border-top: 2px dashed #CBD5E1; padding-top: 1.5rem;">
           <h3 style="margin-bottom: 0.5rem;" data-fr="💬 Discussion rapide & InstaPay" data-en="💬 Quick Chat & InstaPay">💬 Discussion rapide & InstaPay</h3>
           <p style="font-size: 0.95rem; color: #475569;" data-fr="Une question urgente ou prêt(e) à régler par InstaPay / virement ?" data-en="Urgent question or ready to pay via InstaPay / bank transfer?">Une question urgente ou prêt(e) à régler par InstaPay / virement ?</p>
-          <a href="https://wa.me/201000000000" target="_blank" class="btn whatsapp-btn" data-fr="📱 Écrire sur WhatsApp" data-en="📱 Message on WhatsApp">📱 Écrire sur WhatsApp</a>
+          <a href="https://wa.me/201000000000" target="_blank" class="btn whatsapp-btn" data-fr="Écrire sur WhatsApp" data-en="Message on WhatsApp">Écrire sur WhatsApp</a>
         </div>
       </div>
     </div>
@@ -1099,14 +1205,14 @@
     <p class="section-subtitle" data-fr="Les 8 essentiels de votre trousse pour profiter à 100 % de votre séance en ligne :" data-en="The 8 essentials in your toolkit to make the most of your online session:">Les 8 essentiels de votre trousse pour profiter à 100 % de votre séance en ligne :</p>
 
     <div class="trousse-grid">
-      <div class="trousse-item"><span class="emoji">⏰</span><div><strong data-fr="5 min d'avance" data-en="5 min early">5 min d'avance</strong><br><small data-fr="Pour tester le son et la vidéo." data-en="To check audio and video.">Pour tester le son et la vidéo.</small></div></div>
-      <div class="trousse-item"><span class="emoji">💻</span><div><strong data-fr="Ordinateur / Tablette" data-en="Computer / Tablet">Ordinateur / Tablette</strong><br><small data-fr="Plus confortable qu'un téléphone." data-en="More comfortable than a phone.">Plus confortable qu'un téléphone.</small></div></div>
-      <div class="trousse-item"><span class="emoji">📶</span><div><strong data-fr="Bonne connexion" data-en="Good Internet">Bonne connexion</strong><br><small data-fr="Pour parler sans coupures." data-en="For smooth conversations.">Pour parler sans coupures.</small></div></div>
-      <div class="trousse-item"><span class="emoji">🎥</span><div><strong>Google Meet</strong><br><small data-fr="Notre salle de classe virtuelle." data-en="Our virtual classroom.">Notre salle de classe virtuelle.</small></div></div>
-      <div class="trousse-item"><span class="emoji">🎧</span><div><strong data-fr="Casque avec micro" data-en="Headset with mic">Casque avec micro</strong><br><small data-fr="Pour une prononciation au top." data-en="For crystal clear pronunciation.">Pour une prononciation au top.</small></div></div>
-      <div class="trousse-item"><span class="emoji">📓</span><div><strong data-fr="Cahier & Stylo" data-en="Notebook & Pen">Cahier & Stylo</strong><br><small data-fr="Pour mémoriser à la main." data-en="Handwriting boosts memory.">Pour mémoriser à la main.</small></div></div>
-      <div class="trousse-item"><span class="emoji">📄</span><div><strong data-fr="Compte Google" data-en="Google Account">Compte Google</strong><br><small data-fr="Pour notre Google Docs partagé." data-en="For our shared Google Docs.">Pour notre Google Docs partagé.</small></div></div>
-      <div class="trousse-item"><span class="emoji">🤫</span><div><strong data-fr="Endroit calme" data-en="Quiet space">Endroit calme</strong><br><small data-fr="Zéro distraction !" data-en="Zero distractions!">Zéro distraction !</small></div></div>
+      <label class="trousse-item"><input type="checkbox" class="trousse-check"><span class="emoji">⏰</span><div><strong data-fr="5 min d'avance" data-en="5 min early">5 min d'avance</strong><br><small data-fr="Pour tester le son et la vidéo." data-en="To check audio and video.">Pour tester le son et la vidéo.</small></div></label>
+      <label class="trousse-item"><input type="checkbox" class="trousse-check"><span class="emoji">💻</span><div><strong data-fr="Ordinateur / Tablette" data-en="Computer / Tablet">Ordinateur / Tablette</strong><br><small data-fr="Plus confortable qu'un téléphone." data-en="More comfortable than a phone.">Plus confortable qu'un téléphone.</small></div></label>
+      <label class="trousse-item"><input type="checkbox" class="trousse-check"><span class="emoji">📶</span><div><strong data-fr="Bonne connexion" data-en="Good Internet">Bonne connexion</strong><br><small data-fr="Pour parler sans coupures." data-en="For smooth conversations.">Pour parler sans coupures.</small></div></label>
+      <label class="trousse-item"><input type="checkbox" class="trousse-check"><span class="emoji">🎥</span><div><strong>Google Meet</strong><br><small data-fr="Notre salle de classe virtuelle." data-en="Our virtual classroom.">Notre salle de classe virtuelle.</small></div></label>
+      <label class="trousse-item"><input type="checkbox" class="trousse-check"><span class="emoji">🎧</span><div><strong data-fr="Casque avec micro" data-en="Headset with mic">Casque avec micro</strong><br><small data-fr="Pour une prononciation au top." data-en="For crystal clear pronunciation.">Pour une prononciation au top.</small></div></label>
+      <label class="trousse-item"><input type="checkbox" class="trousse-check"><span class="emoji">📓</span><div><strong data-fr="Cahier & Stylo" data-en="Notebook & Pen">Cahier & Stylo</strong><br><small data-fr="Pour mémoriser à la main." data-en="Handwriting boosts memory.">Pour mémoriser à la main.</small></div></label>
+      <label class="trousse-item"><input type="checkbox" class="trousse-check"><span class="emoji">📄</span><div><strong data-fr="Compte Google" data-en="Google Account">Compte Google</strong><br><small data-fr="Pour notre Google Docs partagé." data-en="For our shared Google Docs.">Pour notre Google Docs partagé.</small></div></label>
+      <label class="trousse-item"><input type="checkbox" class="trousse-check"><span class="emoji">🤫</span><div><strong data-fr="Endroit calme" data-en="Quiet space">Endroit calme</strong><br><small data-fr="Zéro distraction !" data-en="Zero distractions!">Zéro distraction !</small></div></label>
     </div>
   </section>
 
@@ -1117,6 +1223,9 @@
   <script>
     let currentLang = 'fr';
     let lastEstimatedProfile = '';
+
+    // ⚠️ À REMPLACER par votre endpoint Formspree (ex: https://formspree.io/f/abcdwxyz)
+    const FORMSPREE_ENDPOINT = 'https://formspree.io/f/VOTRE_ID';
 
     const frogQuotes = {
       fr: [
@@ -1146,27 +1255,105 @@
       setTimeout(() => bubble.style.transform = 'scale(1)', 150);
     }
 
+    // Sons de la mini-grenouille (fichiers à la racine du site), préchargés au démarrage
+    const frogSoundFiles = [
+      'freesound_community-boing-6222.mp3',
+      'freesound_community-boing-2-44164.mp3',
+      'universfield-boing-flexatone-wobble-310482.mp3',
+      'universfield-cartoon-spring-boing-140378.mp3'
+    ];
+    const frogSounds = frogSoundFiles.map(file => {
+      const audio = new Audio(file);
+      audio.preload = 'auto';
+      audio.volume = 0.6;
+      return audio;
+    });
+    let lastSoundIndex = -1;
+
     function playFrogSound() {
       try {
-        const audio = new Audio('sound.mp3');
-        audio.play().catch(() => {});
+        // Tirage aléatoire sans rejouer deux fois de suite le même son
+        let idx;
+        do {
+          idx = Math.floor(Math.random() * frogSounds.length);
+        } while (idx === lastSoundIndex && frogSounds.length > 1);
+        lastSoundIndex = idx;
+
+        const sound = frogSounds[idx];
+        sound.currentTime = 0;
+        sound.play().catch(() => {});
       } catch (e) {}
     }
 
-    function jumpMiniFrog() {
-      playFrogSound();
-      const frog = document.getElementById('miniFrog');
-      frog.classList.remove('bouncing');
-      void frog.offsetWidth;
-      frog.classList.add('bouncing');
+    // La grenouille avance par bonds en arc de cercle (plusieurs petits sauts vers un point au hasard)
+    let frogIsHopping = false;
 
-      const maxW = window.innerWidth - 80;
-      const maxH = 520;
-      const randomX = Math.floor(Math.random() * maxW);
-      const randomY = Math.floor(Math.random() * maxH) + 80;
+    function hopOnce(frog, fromX, fromY, toX, toY) {
+      const dx = toX - fromX;
+      const dy = toY - fromY;
+      const dist = Math.hypot(dx, dy);
+      const height = Math.min(90, 35 + dist * 0.25);   // hauteur de l'arc
+      const tilt = Math.max(-18, Math.min(18, dx / 12)); // penche dans le sens du saut
+      const duration = 480 + dist * 0.6;
+      const steps = 14;
+
+      const frames = [];
+      // Accroupissement avant le saut
+      frames.push({ transform: 'translate(0px, 0px) scale(1.2, 0.78)', offset: 0 });
+      for (let i = 0; i <= steps; i++) {
+        const t = i / steps;
+        const x = dx * t;
+        const y = dy * t - 4 * height * t * (1 - t); // parabole
+        const rot = tilt * (t < 0.5 ? t * 2 : (1 - t) * 2);
+        const stretch = 1 + 0.12 * Math.sin(Math.PI * t);
+        frames.push({
+          transform: `translate(${x}px, ${y}px) rotate(${rot}deg) scale(${1 / stretch * 1.05}, ${stretch})`,
+          offset: 0.1 + 0.8 * t
+        });
+      }
+      // Écrasement à l'atterrissage
+      frames.push({ transform: `translate(${dx}px, ${dy}px) scale(1.25, 0.75)`, offset: 0.93 });
+      frames.push({ transform: `translate(${dx}px, ${dy}px) scale(1, 1)`, offset: 1 });
+
+      return frog.animate(frames, { duration, easing: 'linear' }).finished.then(() => {
+        frog.style.left = `${toX}px`;
+        frog.style.top = `${toY}px`;
+      });
+    }
+
+    async function jumpMiniFrog() {
+      playFrogSound();
+      if (frogIsHopping) return;
+      frogIsHopping = true;
+
+      const frog = document.getElementById('miniFrog');
+      const rect = frog.getBoundingClientRect();
+
+      // Position de départ en coordonnées de page (on remplace right par left au premier saut)
+      let curX = rect.left + window.scrollX;
+      let curY = rect.top + window.scrollY;
       frog.style.right = 'auto';
-      frog.style.left = `${Math.max(10, randomX)}px`;
-      frog.style.top = `${randomY}px`;
+      frog.style.left = `${curX}px`;
+      frog.style.top = `${curY}px`;
+
+      // Point d'arrivée au hasard dans la page
+      const maxX = document.documentElement.clientWidth - 70;
+      const targetX = Math.max(10, Math.floor(Math.random() * maxX));
+      const targetY = Math.floor(Math.random() * 520) + 80;
+
+      // Plusieurs petits bonds plutôt qu'un seul grand déplacement
+      const totalDist = Math.hypot(targetX - curX, targetY - curY);
+      const hops = Math.max(1, Math.min(4, Math.ceil(totalDist / 220)));
+
+      for (let i = 1; i <= hops; i++) {
+        const nextX = curX + (targetX - curX) / (hops - i + 1);
+        const nextY = curY + (targetY - curY) / (hops - i + 1);
+        await hopOnce(frog, curX, curY, nextX, nextY);
+        curX = nextX;
+        curY = nextY;
+      }
+
+      frogIsHopping = false;
     }
 
     function toggleLanguage() {
@@ -1465,16 +1652,86 @@
       }
     }
 
+    // ---------- Grille des créneaux (7 jours x matin / après-midi / soir) ----------
+    const slotDays = [
+      { fr: 'Lundi', en: 'Monday' },
+      { fr: 'Mardi', en: 'Tuesday' },
+      { fr: 'Mercredi', en: 'Wednesday' },
+      { fr: 'Jeudi', en: 'Thursday' },
+      { fr: 'Vendredi', en: 'Friday' },
+      { fr: 'Samedi', en: 'Saturday' },
+      { fr: 'Dimanche', en: 'Sunday' }
+    ];
+    const slotPeriods = [
+      { key: 'matin', fr: '🌅 Matin', en: '🌅 Morning', label: 'Matin' },
+      { key: 'apres-midi', fr: '☀️ Après-midi', en: '☀️ Afternoon', label: 'Après-midi' },
+      { key: 'soir', fr: '🌙 Soir', en: '🌙 Evening', label: 'Soir' }
+    ];
+
+    function buildSlotsGrid() {
+      const grid = document.getElementById('slotsGrid');
+      grid.innerHTML = '';
+      slotDays.forEach((day, d) => {
+        const row = document.createElement('div');
+        row.className = 'slot-row';
+
+        const dayLabel = document.createElement('span');
+        dayLabel.className = 'slot-day';
+        dayLabel.setAttribute('data-fr', day.fr);
+        dayLabel.setAttribute('data-en', day.en);
+        dayLabel.textContent = day.fr;
+        row.appendChild(dayLabel);
+
+        slotPeriods.forEach(p => {
+          const chip = document.createElement('label');
+          chip.className = 'slot-chip';
+
+          const cb = document.createElement('input');
+          cb.type = 'checkbox';
+          cb.dataset.day = day.fr;
+          cb.dataset.period = p.label;
+          cb.id = `slot-${d}-${p.key}`;
+
+          const txt = document.createElement('span');
+          txt.setAttribute('data-fr', p.fr);
+          txt.setAttribute('data-en', p.en);
+          txt.textContent = p.fr;
+
+          chip.appendChild(cb);
+          chip.appendChild(txt);
+          row.appendChild(chip);
+        });
+
+        grid.appendChild(row);
+      });
+    }
+
+    function getSelectedSlotsSummary() {
+      const byDay = {};
+      document.querySelectorAll('#slotsGrid input[type="checkbox"]:checked').forEach(cb => {
+        (byDay[cb.dataset.day] = byDay[cb.dataset.day] || []).push(cb.dataset.period);
+      });
+      return slotDays
+        .filter(d => byDay[d.fr])
+        .map(d => `${d.fr} : ${byDay[d.fr].join(', ')}`)
+        .join(' | ');
+    }
+
+    // ---------- Formulaire ----------
     function handleMotifChange() {
       const motif = document.getElementById('userMotif').value;
-      document.getElementById('coursFields').style.display = motif === 'cours' ? 'flex' : 'none';
+      document.getElementById('coursFields').style.display = (motif === 'cours' || motif === 'reserver') ? 'flex' : 'none';
+      document.getElementById('slotsFields').style.display = motif === 'reserver' ? 'flex' : 'none';
       document.getElementById('devisFields').style.display = motif === 'devis' ? 'flex' : 'none';
     }
 
-    function goToQuoteForm() {
-      const motifSelect = document.getElementById('userMotif');
-      motifSelect.value = 'devis';
+    function preselectMotif(value) {
+      document.getElementById('userMotif').value = value;
       handleMotifChange();
+    }
+
+    function goToQuoteForm() {
+      preselectMotif('devis');
       document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
     }
 
@@ -1483,6 +1740,7 @@
       if (lastEstimatedProfile) {
         levelInput.value = lastEstimatedProfile;
       }
+      preselectMotif('reserver');
       document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
     }
 
@@ -1494,18 +1752,94 @@
       loadQuestion();
     }
 
-    function handleFormSubmit(event) {
-      event.preventDefault();
-      const name = document.getElementById('userName').value;
+    function showFeedback(message, isError) {
       const feedback = document.getElementById('formFeedback');
+      feedback.classList.toggle('error', !!isError);
       feedback.style.display = 'block';
-      feedback.innerText = currentLang === 'fr'
-        ? `Merci ${name} ! Votre demande a bien été enregistrée, je vais revenir vers vous très vite ! 🐸`
-        : `Thank you ${name}! Your request has been recorded, I will get back to you very soon! 🐸`;
-      document.getElementById('contactForm').reset();
-      handleMotifChange();
+      feedback.innerText = message;
     }
 
+    async function handleFormSubmit(event) {
+      event.preventDefault();
+
+      const motifSelect = document.getElementById('userMotif');
+      const motif = motifSelect.value;
+      const motifLabel = motifSelect.options[motifSelect.selectedIndex].getAttribute('data-fr');
+      const name = document.getElementById('userName').value.trim();
+
+      // Réserver un créneau : au moins un créneau coché
+      let slotsSummary = '';
+      if (motif === 'reserver') {
+        slotsSummary = getSelectedSlotsSummary();
+        if (!slotsSummary) {
+          showFeedback(currentLang === 'fr'
+            ? 'Merci de cocher au moins un créneau (jour + moment de la journée).'
+            : 'Please select at least one time slot (day + time of day).', true);
+          return;
+        }
+      }
+
+      // Endpoint non configuré : on ne simule pas un envoi réussi
+      if (FORMSPREE_ENDPOINT.includes('VOTRE_ID')) {
+        showFeedback(currentLang === 'fr'
+          ? "Le formulaire n'est pas encore relié à une adresse email. Écrivez-moi sur WhatsApp en attendant !"
+          : 'The form is not connected to an email address yet. Please message me on WhatsApp in the meantime!', true);
+        return;
+      }
+
+      const payload = {
+        'Motif': motifLabel,
+        'Nom / Prénom': name,
+        'Âge': document.getElementById('userAge').value,
+        'Email': document.getElementById('userEmail').value.trim(),
+        'Niveau de français': document.getElementById('userLevel').value.trim(),
+        'Message': document.getElementById('userMessage').value.trim(),
+        '_gotcha': document.getElementById('userWebsite').value,
+        '_subject': `Atelier du Français — ${motifLabel} (${name})`
+      };
+
+      if (motif === 'cours' || motif === 'reserver') {
+        payload['Format préféré'] = document.getElementById('userFormat').value;
+      }
+      if (motif === 'reserver') {
+        payload['Créneaux souhaités (heure du Caire)'] = slotsSummary;
+      }
+      if (motif === 'devis') {
+        payload['Nationalité'] = document.getElementById('userNationality').value.trim();
+        payload['Lieu de résidence'] = document.getElementById('userResidence').value.trim();
+        payload['Devise souhaitée'] = document.getElementById('userCurrency').value.trim();
+      }
+
+      const submitBtn = document.getElementById('submitBtn');
+      submitBtn.disabled = true;
+
+      try {
+        const response = await fetch(FORMSPREE_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) throw new Error('HTTP ' + response.status);
+
+        showFeedback(currentLang === 'fr'
+          ? `Merci ${name} ! Votre demande a bien été envoyée, je vais revenir vers vous très vite ! 🐸`
+          : `Thank you ${name}! Your request has been sent, I will get back to you very soon! 🐸`, false);
+        document.getElementById('contactForm').reset();
+        handleMotifChange();
+      } catch (err) {
+        showFeedback(currentLang === 'fr'
+          ? "Oups, l'envoi a échoué. Réessayez ou écrivez-moi sur WhatsApp."
+          : 'Oops, sending failed. Please try again or message me on WhatsApp.', true);
+      } finally {
+        submitBtn.disabled = false;
+      }
+    }
+
+    // ---------- Initialisation ----------
+    buildSlotsGrid();
+    document.getElementById('userMotif').value = 'info'; // motif par défaut
+    handleMotifChange();
     loadQuestion();
   </script>
 </body>
