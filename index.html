@@ -202,6 +202,81 @@
       transform: scale(1.1);
     }
 
+    /* Bulle de la mini-grenouille */
+    .frog-speech {
+      position: absolute;
+      display: none;
+      z-index: 96;
+      max-width: 230px;
+      background: var(--white);
+      border: 3px solid var(--navy);
+      border-radius: 16px;
+      padding: 0.6rem 0.9rem;
+      font-weight: 800;
+      font-size: 0.95rem;
+      line-height: 1.35;
+      text-align: center;
+      box-shadow: 4px 4px 0px var(--yellow);
+      pointer-events: none;
+      animation: speechPop 0.3s ease-out;
+    }
+
+    .frog-speech::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: var(--tail, 50%);
+      transform: translateX(-50%);
+      border-width: 11px 11px 0;
+      border-style: solid;
+      border-color: var(--navy) transparent transparent transparent;
+    }
+
+    @keyframes speechPop {
+      0% { opacity: 0; transform: scale(0.6); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    /* Mare */
+    .pond-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 2.2rem;
+    }
+
+    .pond-btn {
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      width: min(520px, 100%);
+    }
+
+    .pond-btn svg {
+      width: 100%;
+      height: auto;
+      display: block;
+      filter: drop-shadow(0 8px 14px rgba(30, 41, 59, 0.12));
+      transition: transform 0.2s;
+    }
+
+    .pond-btn:hover svg {
+      transform: scale(1.02);
+    }
+
+    .pond-btn:focus-visible {
+      outline: 3px solid var(--blue);
+      outline-offset: 4px;
+      border-radius: 24px;
+    }
+
+    .pond-ripple {
+      transform-box: fill-box;
+      transform-origin: center;
+      opacity: 0;
+    }
+
     /* Section Hero */
     .hero {
       display: grid;
@@ -917,6 +992,9 @@
     <path d="M34 62 Q50 74 66 62" fill="none" stroke="#1E293B" stroke-width="3" stroke-linecap="round"/>
   </svg>
 
+  <!-- Bulle de la mini-grenouille (bravo, réponse au formulaire) -->
+  <div id="frogSpeech" class="frog-speech" role="status" aria-live="polite"></div>
+
   <!-- Navigation -->
   <nav>
     <a href="#" class="brand">🐸 L'Atelier du Français<span class="dot">.</span></a>
@@ -1201,6 +1279,42 @@
 
   <!-- 7. COMMENT BIEN SE PRÉPARER -->
   <section id="preparation">
+    <div class="pond-wrap">
+      <button type="button" class="pond-btn" onclick="frogToPond()" aria-label="Mare : cliquez pour faire venir la grenouille">
+        <svg viewBox="0 0 520 170" xmlns="http://www.w3.org/2000/svg">
+          <!-- Roseaux gauche -->
+          <path d="M42 108 Q34 60 48 22" fill="none" stroke="#1E293B" stroke-width="4" stroke-linecap="round"/>
+          <path d="M62 112 Q64 72 76 40" fill="none" stroke="#1E293B" stroke-width="4" stroke-linecap="round"/>
+          <ellipse cx="48" cy="30" rx="6" ry="14" fill="#1E293B"/>
+          <!-- Roseaux droite -->
+          <path d="M478 108 Q486 60 472 22" fill="none" stroke="#1E293B" stroke-width="4" stroke-linecap="round"/>
+          <path d="M458 112 Q456 72 444 40" fill="none" stroke="#1E293B" stroke-width="4" stroke-linecap="round"/>
+          <ellipse cx="472" cy="30" rx="6" ry="14" fill="#1E293B"/>
+          <!-- Eau -->
+          <ellipse cx="260" cy="100" rx="240" ry="62" fill="#7CCBE6" stroke="#1E293B" stroke-width="4"/>
+          <ellipse cx="260" cy="98" rx="205" ry="45" fill="#A6DDF0" opacity="0.7"/>
+          <path d="M95 118 q15 6 30 0" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" opacity="0.8"/>
+          <path d="M385 80 q15 6 30 0" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" opacity="0.8"/>
+          <path d="M170 128 q12 5 24 0" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" opacity="0.8"/>
+          <!-- Nénuphars -->
+          <ellipse cx="135" cy="88" rx="34" ry="13" fill="#06D6A0" stroke="#1E293B" stroke-width="3.5"/>
+          <path d="M135 88 L166 80" stroke="#1E293B" stroke-width="3" stroke-linecap="round"/>
+          <ellipse cx="395" cy="112" rx="38" ry="14" fill="#06D6A0" stroke="#1E293B" stroke-width="3.5"/>
+          <path d="M395 112 L429 105" stroke="#1E293B" stroke-width="3" stroke-linecap="round"/>
+          <ellipse cx="395" cy="104" rx="7" ry="9" fill="#FF5A5F" stroke="#1E293B" stroke-width="2.5"/>
+          <ellipse cx="383" cy="108" rx="7" ry="8" fill="#FF5A5F" stroke="#1E293B" stroke-width="2.5" transform="rotate(-25 383 108)"/>
+          <ellipse cx="407" cy="108" rx="7" ry="8" fill="#FF5A5F" stroke="#1E293B" stroke-width="2.5" transform="rotate(25 407 108)"/>
+          <circle cx="395" cy="107" r="3.5" fill="#FFD166"/>
+          <!-- Nénuphar principal (la grenouille s'y pose) -->
+          <ellipse id="pondPad" cx="260" cy="104" rx="52" ry="20" fill="#06D6A0" stroke="#1E293B" stroke-width="4"/>
+          <path d="M260 104 L306 93" stroke="#1E293B" stroke-width="3.5" stroke-linecap="round"/>
+          <!-- Ondes (animées à l'arrivée de la grenouille) -->
+          <ellipse id="pondRipple1" class="pond-ripple" cx="260" cy="104" rx="60" ry="23" fill="none" stroke="#FFFFFF" stroke-width="4"/>
+          <ellipse id="pondRipple2" class="pond-ripple" cx="260" cy="104" rx="60" ry="23" fill="none" stroke="#FFFFFF" stroke-width="3"/>
+        </svg>
+      </button>
+      <span class="frog-hint" data-fr="👆 Cliquez sur la mare !" data-en="👆 Click on the pond!">👆 Cliquez sur la mare !</span>
+    </div>
     <h2 class="section-title" data-fr="🎒 Comment bien se préparer ?" data-en="🎒 How to Prepare Well?">🎒 Comment bien se préparer ?</h2>
     <p class="section-subtitle" data-fr="Les 8 essentiels de votre trousse pour profiter à 100 % de votre séance en ligne :" data-en="The 8 essentials in your toolkit to make the most of your online session:">Les 8 essentiels de votre trousse pour profiter à 100 % de votre séance en ligne :</p>
 
@@ -1285,8 +1399,14 @@
       } catch (e) {}
     }
 
-    // La grenouille avance par bonds en arc de cercle (plusieurs petits sauts vers un point au hasard)
+    // ---------- Mini-grenouille : bonds en arc ----------
     let frogIsHopping = false;
+    let frogQueue = Promise.resolve();
+
+    function runFrogTrip(fn) {
+      frogQueue = frogQueue.then(fn).catch(() => { frogIsHopping = false; });
+      return frogQueue;
+    }
 
     function hopOnce(frog, fromX, fromY, toX, toY) {
       const dx = toX - fromX;
@@ -1321,29 +1441,28 @@
       });
     }
 
-    async function jumpMiniFrog() {
-      playFrogSound();
-      if (frogIsHopping) return;
+    // Fait sauter la grenouille jusqu'à un point de la page (coordonnées de page)
+    async function hopTo(targetX, targetY) {
+      const frog = document.getElementById('miniFrog');
+      hideFrogBubble();
       frogIsHopping = true;
 
-      const frog = document.getElementById('miniFrog');
       const rect = frog.getBoundingClientRect();
-
-      // Position de départ en coordonnées de page (on remplace right par left au premier saut)
       let curX = rect.left + window.scrollX;
       let curY = rect.top + window.scrollY;
+
+      // Si elle est très loin et hors de l'écran, elle arrive depuis le haut de l'écran
+      const offscreen = rect.bottom < 0 || rect.top > window.innerHeight || rect.right < 0 || rect.left > window.innerWidth;
+      if (offscreen && Math.hypot(targetX - curX, targetY - curY) > 1200) {
+        curX = Math.max(10, Math.min(targetX + (Math.random() - 0.5) * 300, document.documentElement.clientWidth - 70));
+        curY = Math.max(80, targetY - window.innerHeight - 150);
+      }
       frog.style.right = 'auto';
       frog.style.left = `${curX}px`;
       frog.style.top = `${curY}px`;
 
-      // Point d'arrivée au hasard dans la page
-      const maxX = document.documentElement.clientWidth - 70;
-      const targetX = Math.max(10, Math.floor(Math.random() * maxX));
-      const targetY = Math.floor(Math.random() * 520) + 80;
-
-      // Plusieurs petits bonds plutôt qu'un seul grand déplacement
       const totalDist = Math.hypot(targetX - curX, targetY - curY);
-      const hops = Math.max(1, Math.min(4, Math.ceil(totalDist / 220)));
+      const hops = Math.max(1, Math.min(8, Math.ceil(totalDist / 260)));
 
       for (let i = 1; i <= hops; i++) {
         const nextX = curX + (targetX - curX) / (hops - i + 1);
@@ -1352,8 +1471,124 @@
         curX = nextX;
         curY = nextY;
       }
-
       frogIsHopping = false;
+    }
+
+    // Garde la grenouille visible (sous la barre de navigation, dans l'écran)
+    function clampToViewportY(y) {
+      return Math.max(window.scrollY + 110, Math.min(y, window.scrollY + window.innerHeight - 100));
+    }
+
+    // Clic sur la mini-grenouille : bond vers un point au hasard de l'écran
+    function jumpMiniFrog() {
+      playFrogSound();
+      if (frogIsHopping) return;
+      const maxX = document.documentElement.clientWidth - 70;
+      const targetX = Math.max(10, Math.floor(Math.random() * maxX));
+      const targetY = window.scrollY + 100 + Math.floor(Math.random() * Math.max(100, window.innerHeight - 220));
+      runFrogTrip(() => hopTo(targetX, targetY));
+    }
+
+    // ---------- Bulle de la grenouille ----------
+    const frogMessages = {
+      bravo: { fr: "Bravo, bien joué ! 🎉", en: "Well done! 🎉" },
+      reply: { fr: "Je vous réponds aussi vite que possible !", en: "I'll get back to you as soon as possible!" },
+      pond1: { fr: "Prêt(e) à apprendre le français ?", en: "Ready to learn French?" },
+      pond2: { fr: "On va vivre de grandes aventures !", en: "We're going to have great adventures!" },
+      pondJoke: {
+        fr: "Pourquoi les grenouilles font-elles des fautes en dictée ? À cause de la croâ-thographe ! 🐸",
+        en: "Why do frogs make mistakes in spelling tests? Too much croâ-thography! 🐸"
+      }
+    };
+    // Phrases de la mare : une seule par visite, dans l'ordre, puis on recommence
+    const pondPhrases = [['pond1', 5000], ['pond2', 5000], ['pondJoke', 8000]];
+    let pondPhraseIndex = 0;
+    let frogBubbleKey = null;
+    let frogBubbleTimer = null;
+
+    function positionFrogBubble() {
+      const bubble = document.getElementById('frogSpeech');
+      const frog = document.getElementById('miniFrog');
+      const fl = parseFloat(frog.style.left) || 0;
+      const ft = parseFloat(frog.style.top) || 0;
+      const vw = document.documentElement.clientWidth;
+      const bw = bubble.offsetWidth;
+      const bh = bubble.offsetHeight;
+      const left = Math.min(Math.max(8, fl + 30 - bw / 2), vw - bw - 8);
+      bubble.style.left = `${left}px`;
+      bubble.style.top = `${ft - bh - 16}px`;
+      bubble.style.setProperty('--tail', `${Math.max(20, Math.min(fl + 30 - left, bw - 20))}px`);
+    }
+
+    function showFrogBubble(key, duration = 7000) {
+      const bubble = document.getElementById('frogSpeech');
+      frogBubbleKey = key;
+      bubble.style.display = 'none';
+      bubble.textContent = frogMessages[key][currentLang];
+      bubble.style.display = 'block';
+      positionFrogBubble();
+      clearTimeout(frogBubbleTimer);
+      frogBubbleTimer = setTimeout(() => {
+        frogBubbleKey = null;
+        bubble.style.display = 'none';
+      }, duration);
+    }
+
+    function refreshFrogBubble() {
+      if (!frogBubbleKey) return;
+      document.getElementById('frogSpeech').textContent = frogMessages[frogBubbleKey][currentLang];
+      positionFrogBubble();
+    }
+
+    function hideFrogBubble() {
+      clearTimeout(frogBubbleTimer);
+      frogBubbleKey = null;
+      document.getElementById('frogSpeech').style.display = 'none';
+    }
+
+    // ---------- Scénarios ----------
+    // Clic sur la mare : la grenouille vient se poser sur le nénuphar
+    function frogToPond() {
+      playFrogSound();
+      runFrogTrip(async () => {
+        const pad = document.getElementById('pondPad').getBoundingClientRect();
+        const x = pad.left + window.scrollX + pad.width / 2 - 30;
+        const y = pad.top + window.scrollY + pad.height / 2 - 44;
+        await hopTo(x, y);
+        ['pondRipple1', 'pondRipple2'].forEach((id, i) => {
+          document.getElementById(id).animate(
+            [{ transform: 'scale(0.5)', opacity: 0.9 }, { transform: 'scale(1.7)', opacity: 0 }],
+            { duration: 1000, delay: i * 250, easing: 'ease-out' }
+          );
+        });
+        const [key, duration] = pondPhrases[pondPhraseIndex % pondPhrases.length];
+        pondPhraseIndex++;
+        showFrogBubble(key, duration);
+      });
+    }
+
+    // Fin du mini-test : la grenouille vient dire bravo
+    function frogCongrats() {
+      playFrogSound();
+      runFrogTrip(async () => {
+        const w = document.querySelector('.quiz-wrapper').getBoundingClientRect();
+        const x = w.right + window.scrollX - 90;
+        const y = clampToViewportY(w.top + window.scrollY - 40);
+        await hopTo(x, y);
+        showFrogBubble('bravo');
+      });
+    }
+
+    // Demande envoyée : la grenouille vient promettre une réponse rapide
+    function frogReplies() {
+      playFrogSound();
+      runFrogTrip(async () => {
+        const r = document.getElementById('formFeedback').getBoundingClientRect();
+        const x = Math.max(10, r.right + window.scrollX - 80);
+        const y = clampToViewportY(r.top + window.scrollY - 48);
+        await hopTo(x, y);
+        showFrogBubble('reply');
+      });
     }
 
     function toggleLanguage() {
@@ -1364,6 +1599,7 @@
       document.querySelectorAll('[data-fr]').forEach(el => {
         el.innerHTML = el.getAttribute(`data-${currentLang}`);
       });
+      refreshFrogBubble();
 
       if (currentQ < quizData.length) {
         loadQuestion();
@@ -1590,6 +1826,7 @@
         loadQuestion();
       } else {
         showResult();
+        frogCongrats();
       }
     }
 
@@ -1745,6 +1982,7 @@
     }
 
     function restartQuiz() {
+      hideFrogBubble();
       currentQ = 0;
       score = 0;
       document.getElementById('quizBox').style.display = 'block';
@@ -1827,6 +2065,7 @@
           : `Thank you ${name}! Your request has been sent, I will get back to you very soon! 🐸`, false);
         document.getElementById('contactForm').reset();
         handleMotifChange();
+        frogReplies();
       } catch (err) {
         showFeedback(currentLang === 'fr'
           ? "Oups, l'envoi a échoué. Réessayez ou écrivez-moi sur WhatsApp."
