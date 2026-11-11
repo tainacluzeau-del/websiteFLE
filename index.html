@@ -3,7 +3,19 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>L'Atelier du Français — Apprendre le français avec le sourire</title>
+  <title>Cours de français en ligne — L'Atelier du Français</title>
+  <meta name="description" content="Cours de français en ligne en individuel ou en petit groupe : pratique orale, bonne humeur et parcours sur mesure. Testez votre niveau gratuitement." />
+  <meta name="theme-color" content="#FFD166" />
+  <link rel="canonical" href="https://atelierfrancais.club/" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐸</text></svg>" />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="fr_FR" />
+  <meta property="og:site_name" content="L'Atelier du Français" />
+  <meta property="og:title" content="Cours de français en ligne — L'Atelier du Français" />
+  <meta property="og:description" content="Cours de français en ligne en individuel ou en petit groupe : pratique orale, bonne humeur et parcours sur mesure. Testez votre niveau gratuitement." />
+  <meta property="og:url" content="https://atelierfrancais.club/" />
+  <meta property="og:image" content="https://atelierfrancais.club/og-image.png" />
+  <meta name="twitter:card" content="summary_large_image" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -14,6 +26,7 @@
       --yellow: #FFD166;
       --mint: #06D6A0;
       --blue: #118AB2;
+      --coral-dark: #D1343A;
       --cream: #FFFDF7;
       --white: #FFFFFF;
       --border: #E2E8F0;
@@ -29,6 +42,7 @@
 
     html {
       scroll-behavior: smooth;
+      scroll-padding-top: calc(var(--nav-h, 70px) + 10px);
     }
 
     body {
@@ -85,7 +99,31 @@
       align-items: center;
       gap: 1.25rem;
       flex-wrap: wrap;
+      margin-left: auto;
     }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .nav-burger {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      background: var(--white);
+      border: 2px solid var(--navy);
+      border-radius: 12px;
+      color: var(--navy);
+      cursor: pointer;
+    }
+
+    .nav-burger .ic-close { display: none; }
+    .nav-burger[aria-expanded="true"] .ic-open { display: none; }
+    .nav-burger[aria-expanded="true"] .ic-close { display: block; }
 
     .nav-links a {
       text-decoration: none;
@@ -151,7 +189,7 @@
     }
 
     .btn-primary {
-      background: var(--coral);
+      background: var(--coral-dark);
       color: var(--white);
       box-shadow: 4px 4px 0px var(--navy);
     }
@@ -187,7 +225,7 @@
     /* Mini-grenouille sauteuse */
     .mini-frog {
       position: absolute;
-      top: 105px;
+      top: calc(var(--nav-h, 70px) + 20px);
       right: 4%;
       width: 60px;
       height: 60px;
@@ -887,7 +925,7 @@
 
     .whatsapp-btn {
       background: #25D366;
-      color: var(--white);
+      color: var(--navy);
       width: 100%;
       margin-top: 1rem;
       box-shadow: 4px 4px 0px var(--navy);
@@ -976,12 +1014,156 @@
         grid-column: 1 / -1;
       }
     }
+    /* Pas de cadre au clic ou au toucher sur les grenouilles ; le cadre reste pour la navigation au clavier */
+    .mini-frog, .frog-svg {
+      -webkit-tap-highlight-color: transparent;
+    }
+    .mini-frog:focus:not(:focus-visible),
+    .frog-svg:focus:not(:focus-visible) {
+      outline: none;
+    }
+
+    /* Accessibilité : focus visible sur les grenouilles et le menu */
+    .mini-frog:focus-visible,
+    .frog-svg:focus-visible,
+    .nav-burger:focus-visible,
+    .wa-float:focus-visible {
+      outline: 3px solid var(--blue);
+      outline-offset: 4px;
+      border-radius: 12px;
+    }
+
+    /* Bouton WhatsApp flottant (téléphone uniquement) */
+    .wa-float {
+      display: none;
+      position: fixed;
+      right: 14px;
+      bottom: 14px;
+      z-index: 90;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0.6rem 1.2rem;
+      background: #25D366;
+      color: var(--navy);
+      border: 2px solid var(--navy);
+      border-radius: 50px;
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 600;
+      font-size: 1rem;
+      text-decoration: none;
+      box-shadow: 3px 3px 0px var(--navy);
+    }
+
+    .wa-float.hidden {
+      display: none !important;
+    }
+
+    /* Téléphone : menu compact, premier écran resserré */
+    @media (max-width: 860px) {
+      nav {
+        padding: 0.45rem 4%;
+        gap: 0.5rem;
+        flex-wrap: nowrap;
+      }
+      .brand {
+        display: block;
+        font-size: 0.98rem;
+        line-height: 1.2;
+        flex: 1 1 0;
+        min-width: 0;
+      }
+      .nav-burger {
+        display: flex;
+      }
+      .lang-btn {
+        padding: 0.3rem 0.3rem;
+        min-height: 40px;
+      }
+      .lang-pill {
+        padding: 0.3rem 0.55rem;
+      }
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        margin-left: 0;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        padding: 0.3rem 5% 0.6rem;
+        background: var(--cream);
+        border-bottom: 3px solid var(--yellow);
+        box-shadow: 0 12px 20px rgba(30, 41, 59, 0.12);
+      }
+      nav.open .nav-links {
+        display: flex;
+      }
+      .nav-links a {
+        display: flex;
+        align-items: center;
+        min-height: 48px;
+        font-size: 1.05rem;
+        border-bottom: 1px solid var(--border);
+      }
+      .nav-links a:last-child {
+        border-bottom: none;
+      }
+      .nav-links a:hover {
+        transform: none;
+      }
+      section {
+        padding: 3rem 5%;
+      }
+      .hero {
+        padding-top: 4.6rem;   /* laisse la place à la petite grenouille sous le menu */
+        padding-bottom: 2rem;
+        gap: 1.5rem;
+      }
+      .mini-frog {
+        top: calc(var(--nav-h, 70px) + 8px);
+      }
+      .hero-badge {
+        font-size: 0.8rem;
+        margin-bottom: 0.8rem;
+      }
+      .hero h1 {
+        font-size: 1.95rem;
+        margin-bottom: 0.8rem;
+      }
+      .hero p {
+        font-size: 1.02rem;
+      }
+      .cta-group {
+        margin-top: 1.2rem;
+        gap: 0.7rem;
+      }
+      .btn {
+        padding: 0.75rem 1.3rem;
+      }
+      .wa-float {
+        display: inline-flex;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .brand-emoji { display: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .frog-svg { animation: none; }
+      .frog-speech { animation: none; }
+      * { transition-duration: 0.01ms !important; }
+    }
   </style>
 </head>
 <body>
 
   <!-- Mini-grenouille sauteuse interactive (60x60px, béret avec trait vertical) -->
-  <svg id="miniFrog" class="mini-frog" viewBox="0 0 100 100" onclick="jumpMiniFrog()" title="Croâ ! Clique-moi !">
+  <svg id="miniFrog" class="mini-frog" viewBox="0 0 100 100" onclick="jumpMiniFrog()" onkeydown="frogKey(event, jumpMiniFrog)" role="button" tabindex="0" aria-label="Petite grenouille : cliquez pour la faire sauter" title="Croâ ! Clique-moi !">
     <path d="M50 14 L50 5" stroke="#1E293B" stroke-width="3.5" stroke-linecap="round"/>
     <ellipse cx="50" cy="22" rx="22" ry="8" fill="#FF5A5F" stroke="#1E293B" stroke-width="3"/>
     <ellipse cx="50" cy="56" rx="34" ry="26" fill="#06D6A0" stroke="#1E293B" stroke-width="3"/>
@@ -996,18 +1178,24 @@
   <div id="frogSpeech" class="frog-speech" role="status" aria-live="polite"></div>
 
   <!-- Navigation -->
-  <nav>
-    <a href="#" class="brand">🐸 L'Atelier du Français<span class="dot">.</span></a>
-    <div class="nav-links">
+  <nav id="siteNav">
+    <a href="#" class="brand"><span class="brand-emoji">🐸</span> L'Atelier du Français<span class="dot">.</span></a>
+    <div class="nav-links" id="navLinks">
       <a href="#esprit" data-fr="L'Esprit" data-en="The Spirit">L'Esprit</a>
+      <a href="#quiz" data-fr="Test de niveau" data-en="Level Test">Test de niveau</a>
       <a href="#cours" data-fr="Les Cours" data-en="Lessons">Les Cours</a>
       <a href="#tarifs" data-fr="Tarifs" data-en="Rates">Tarifs</a>
-      <a href="#quiz" data-fr="Test de niveau" data-en="Level Test">Test de niveau</a>
       <a href="#contact" data-fr="Réserver" data-en="Book Now">Réserver</a>
       <a href="#preparation" data-fr="Préparation" data-en="Preparation">Préparation</a>
-      <button class="lang-btn" id="langToggle" onclick="toggleLanguage()" aria-label="Changer de langue">
+    </div>
+    <div class="nav-right">
+      <button class="lang-btn" id="langToggle" onclick="toggleLanguage()" aria-label="Changer de langue / Change language">
         <span id="pillFr" class="lang-pill active">FR</span>
         <span id="pillEn" class="lang-pill">EN</span>
+      </button>
+      <button type="button" class="nav-burger" id="navBurger" onclick="toggleNav()" aria-expanded="false" aria-controls="navLinks" aria-label="Menu">
+        <svg class="ic-open" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" fill="none"/></svg>
+        <svg class="ic-close" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" fill="none"/></svg>
       </button>
     </div>
   </nav>
@@ -1029,7 +1217,7 @@
       <div class="speech-bubble" id="frogBubble" data-fr="« Croâ-ssant ! Prêt(e) à dompter le subjonctif ? »" data-en="« Croâ-ssant! Ready to tame the subjunctive? »">
         « Croâ-ssant ! Prêt(e) à dompter le subjonctif ? »
       </div>
-      <svg class="frog-svg" viewBox="0 0 220 220" onclick="changeFrogQuote()" title="Cliquez-moi ! / Click me!">
+      <svg class="frog-svg" viewBox="0 0 220 220" onclick="changeFrogQuote()" onkeydown="frogKey(event, changeFrogQuote)" role="button" tabindex="0" aria-label="Jean-Michel la grenouille : cliquez pour changer sa phrase" title="Cliquez-moi ! / Click me!">
         <ellipse cx="110" cy="45" rx="52" ry="18" fill="#FF5A5F" stroke="#1E293B" stroke-width="4"/>
         <path d="M108 27 L112 18" stroke="#1E293B" stroke-width="4" stroke-linecap="round"/>
         <ellipse cx="110" cy="105" rx="68" ry="52" fill="#06D6A0" stroke="#1E293B" stroke-width="4"/>
@@ -1078,6 +1266,33 @@
       <div>
         <h3 data-fr="Qui suis-je ?" data-en="Who am I?">Qui suis-je ?</h3>
         <p data-fr="Votre professeure de FLE passionnée ! Je vis à l'étranger et je connais bien les défis relevant des différences d'accents et de culture, en particulier en Italie, en Égypte et dans les pays arabes. Mon objectif : que vous osiez parler français sans crainte de vous tromper, avec une pédagogie structurée, bienveillante et toujours une touche d'humour." data-en="Your passionate French teacher! I live abroad and I deeply understand the challenges linked to accents and cultural differences, especially in Italy, Egypt, and Arab countries. My goal: helping you dare to speak French without fear of making mistakes, through a structured, caring approach and always a touch of humor.">Votre professeure de FLE passionnée ! Je vis à l'étranger et je connais bien les défis relevant des différences d'accents et de culture, en particulier en Italie, en Égypte et dans les pays arabes. Mon objectif : que vous osiez parler français sans crainte de vous tromper, avec une pédagogie structurée, bienveillante et toujours une touche d'humour.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. MINI-TEST DE NIVEAU (12 questions) -->
+  <section id="quiz">
+    <h2 class="section-title" data-fr="🎯 Le Mini-Test de Niveau" data-en="🎯 The Mini Level Test">🎯 Le Mini-Test de Niveau</h2>
+    <p class="section-subtitle" data-fr="12 petits défis pour voir où vous en êtes avec Jean-Michel la Grenouille !" data-en="12 fun challenges to see where you stand with Jean-Michel the Frog!">12 petits défis pour voir où vous en êtes avec Jean-Michel la Grenouille !</p>
+
+    <div class="quiz-wrapper">
+      <div id="quizBox">
+        <div class="quiz-progress"><div class="quiz-progress-bar" id="progressBar"></div></div>
+        <div class="quiz-question" id="questionText">Chargement...</div>
+        <div class="quiz-options" id="optionsBox"></div>
+      </div>
+
+      <div class="quiz-result" id="quizResult">
+        <h3 id="resultTitle"></h3>
+        <p id="resultLevel" style="font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 1.2rem; margin-bottom: 0.6rem;"></p>
+        <p id="resultDesc" style="font-size: 1.1rem;"></p>
+        <div class="quiz-disclaimer" id="quizDisclaimer" data-fr="ℹ️ Ce niveau n'est qu'une indication basée sur un nombre restreint de questions. Votre professeur vous proposera un test plus complet avant de débuter les cours." data-en="ℹ️ This level is only an indication based on a limited number of questions. Your teacher will offer you a more complete test before starting lessons.">
+          ℹ️ Ce niveau n'est qu'une indication basée sur un nombre restreint de questions. Votre professeur vous proposera un test plus complet avant de débuter les cours.
+        </div>
+        <div class="cta-group" style="justify-content: center;">
+          <button type="button" class="btn btn-primary" onclick="bookWithQuizResult()" data-fr="📅 Réserver mon créneau" data-en="📅 Book my slot">📅 Réserver mon créneau</button>
+          <button type="button" class="btn btn-secondary" onclick="restartQuiz()" data-fr="🔄 Refaire le test" data-en="🔄 Retake Test">🔄 Refaire le test</button>
+        </div>
       </div>
     </div>
   </section>
@@ -1144,32 +1359,6 @@
     </div>
   </section>
 
-  <!-- 5. MINI-TEST DE NIVEAU (12 questions) -->
-  <section id="quiz">
-    <h2 class="section-title" data-fr="🎯 Le Mini-Test de Niveau" data-en="🎯 The Mini Level Test">🎯 Le Mini-Test de Niveau</h2>
-    <p class="section-subtitle" data-fr="12 petits défis pour voir où vous en êtes avec Jean-Michel la Grenouille !" data-en="12 fun challenges to see where you stand with Jean-Michel the Frog!">12 petits défis pour voir où vous en êtes avec Jean-Michel la Grenouille !</p>
-
-    <div class="quiz-wrapper">
-      <div id="quizBox">
-        <div class="quiz-progress"><div class="quiz-progress-bar" id="progressBar"></div></div>
-        <div class="quiz-question" id="questionText">Chargement...</div>
-        <div class="quiz-options" id="optionsBox"></div>
-      </div>
-
-      <div class="quiz-result" id="quizResult">
-        <h3 id="resultTitle"></h3>
-        <p id="resultDesc" style="font-size: 1.1rem;"></p>
-        <div class="quiz-disclaimer" id="quizDisclaimer" data-fr="ℹ️ Ce niveau n'est qu'une indication basée sur un nombre restreint de questions. Votre professeur vous proposera un test plus complet avant de débuter les cours." data-en="ℹ️ This level is only an indication based on a limited number of questions. Your teacher will offer you a more complete test before starting lessons.">
-          ℹ️ Ce niveau n'est qu'une indication basée sur un nombre restreint de questions. Votre professeur vous proposera un test plus complet avant de débuter les cours.
-        </div>
-        <div class="cta-group" style="justify-content: center;">
-          <button type="button" class="btn btn-primary" onclick="bookWithQuizResult()" data-fr="📅 Réserver mon créneau" data-en="📅 Book my slot">📅 Réserver mon créneau</button>
-          <button type="button" class="btn btn-secondary" onclick="restartQuiz()" data-fr="🔄 Refaire le test" data-en="🔄 Retake Test">🔄 Refaire le test</button>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- 6. RÉSERVER & CONTACTER -->
   <section id="contact">
     <h2 class="section-title" data-fr="📅 Réserver & Contacter" data-en="📅 Book & Contact">📅 Réserver & Contacter</h2>
@@ -1178,7 +1367,7 @@
     <div class="contact-grid">
       <div class="contact-card">
         <h3 style="margin-bottom: 1.2rem;" data-fr="✉️ Me contacter / Demander un devis" data-en="✉️ Contact me / Request a Quote">✉️ Me contacter / Demander un devis</h3>
-        <form id="contactForm" onsubmit="handleFormSubmit(event)" autocomplete="off">
+        <form id="contactForm" onsubmit="handleFormSubmit(event)">
           <div class="form-group">
             <label for="userMotif" data-fr="Motif de votre demande" data-en="Reason for your request">Motif de votre demande</label>
             <select id="userMotif" onchange="handleMotifChange()" autocomplete="off" required>
@@ -1211,44 +1400,44 @@
             <div class="form-row">
               <div class="form-group">
                 <label for="userNationality" data-fr="Nationalité" data-en="Nationality">Nationalité</label>
-                <input type="text" id="userNationality" placeholder="Ex: Italienne, Égyptienne...">
+                <input type="text" id="userNationality" placeholder="Ex: Italienne, Égyptienne..." data-ph-fr="Ex: Italienne, Égyptienne..." data-ph-en="E.g. Italian, Egyptian...">
               </div>
               <div class="form-group">
                 <label for="userResidence" data-fr="Lieu de résidence" data-en="Country of residence">Lieu de résidence</label>
-                <input type="text" id="userResidence" placeholder="Ex: Le Caire, Rome...">
+                <input type="text" id="userResidence" placeholder="Ex: Le Caire, Rome..." data-ph-fr="Ex: Le Caire, Rome..." data-ph-en="E.g. Cairo, Rome...">
               </div>
             </div>
             <div class="form-group">
               <label for="userCurrency" data-fr="Devise souhaitée" data-en="Preferred Currency">Devise souhaitée</label>
-              <input type="text" id="userCurrency" placeholder="Ex: EUR, EGP, USD...">
+              <input type="text" id="userCurrency" placeholder="Ex: EUR, EGP, USD..." data-ph-fr="Ex: EUR, EGP, USD..." data-ph-en="E.g. EUR, EGP, USD...">
             </div>
           </div>
 
           <div class="form-row">
             <div class="form-group">
               <label for="userName" data-fr="Nom / Prénom" data-en="Name">Nom / Prénom</label>
-              <input type="text" id="userName" required placeholder="Ex: Sarah">
+              <input type="text" id="userName" required autocomplete="name" placeholder="Ex: Sarah" data-ph-fr="Ex: Sarah" data-ph-en="E.g. Sarah">
             </div>
             <div class="form-group">
               <label for="userAge" data-fr="Âge" data-en="Age">Âge</label>
-              <input type="number" id="userAge" min="5" max="99" placeholder="Ex: 28">
+              <input type="number" id="userAge" min="5" max="99" placeholder="Ex: 28" data-ph-fr="Ex: 28" data-ph-en="E.g. 28">
             </div>
           </div>
 
           <div class="form-row">
             <div class="form-group">
               <label for="userEmail" data-fr="Email" data-en="Email">Email</label>
-              <input type="email" id="userEmail" required placeholder="sarah@gmail.com">
+              <input type="email" id="userEmail" required autocomplete="email" placeholder="sarah@gmail.com" data-ph-fr="sarah@gmail.com" data-ph-en="sarah@gmail.com">
             </div>
             <div class="form-group">
               <label for="userLevel" data-fr="Niveau de français" data-en="French level">Niveau de français</label>
-              <input type="text" id="userLevel" placeholder="Ex: Débutant / Intermédiaire">
+              <input type="text" id="userLevel" placeholder="Ex: Débutant / Intermédiaire" data-ph-fr="Ex: Débutant / Intermédiaire" data-ph-en="E.g. Beginner / Intermediate">
             </div>
           </div>
 
           <div class="form-group">
             <label for="userMessage" data-fr="Votre message" data-en="Your message">Votre message</label>
-            <textarea id="userMessage" rows="3" placeholder="Bonjour ! Je souhaite..."></textarea>
+            <textarea id="userMessage" rows="3" placeholder="Bonjour ! Je souhaite..." data-ph-fr="Bonjour ! Je souhaite..." data-ph-en="Hello! I would like..."></textarea>
           </div>
 
           <!-- Champ piège anti-spam (invisible pour les humains) -->
@@ -1271,7 +1460,7 @@
         <div style="border-top: 2px dashed #CBD5E1; padding-top: 1.5rem;">
           <h3 style="margin-bottom: 0.5rem;" data-fr="💬 Discussion rapide & InstaPay" data-en="💬 Quick Chat & InstaPay">💬 Discussion rapide & InstaPay</h3>
           <p style="font-size: 0.95rem; color: #475569;" data-fr="Une question urgente ou prêt(e) à régler par InstaPay / virement ?" data-en="Urgent question or ready to pay via InstaPay / bank transfer?">Une question urgente ou prêt(e) à régler par InstaPay / virement ?</p>
-          <a href="https://wa.me/201000000000" target="_blank" class="btn whatsapp-btn" data-fr="Écrire sur WhatsApp" data-en="Message on WhatsApp">Écrire sur WhatsApp</a>
+          <a id="waCard" href="https://wa.me/201000000000" target="_blank" rel="noopener" class="btn whatsapp-btn" data-fr="Écrire sur WhatsApp" data-en="Message on WhatsApp">Écrire sur WhatsApp</a>
         </div>
       </div>
     </div>
@@ -1334,8 +1523,14 @@
     <p>© 2026 L'Atelier du Français — Fait avec ❤️ et beaucoup de café ☕</p>
   </footer>
 
+  <a id="waFloat" class="wa-float" href="https://wa.me/201000000000" target="_blank" rel="noopener" aria-label="WhatsApp">WhatsApp</a>
+
   <script>
     let currentLang = 'fr';
+    const reduceMotion = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+
+    // ⚠️ À REMPLACER par votre vrai numéro WhatsApp, au format international sans + ni espaces (ex: 201012345678)
+    const WHATSAPP_NUMBER = '201000000000';
     let lastEstimatedProfile = '';
 
     // ⚠️ À REMPLACER par votre endpoint Formspree (ex: https://formspree.io/f/abcdwxyz)
@@ -1369,23 +1564,35 @@
       setTimeout(() => bubble.style.transform = 'scale(1)', 150);
     }
 
-    // Sons de la mini-grenouille (fichiers à la racine du site), préchargés au démarrage
+    // Sons de la mini-grenouille (fichiers à la racine du site) : chargés au premier toucher, pas à l'ouverture de la page
     const frogSoundFiles = [
       'freesound_community-boing-6222.mp3',
       'freesound_community-boing-2-44164.mp3',
       'universfield-boing-flexatone-wobble-310482.mp3',
       'universfield-cartoon-spring-boing-140378.mp3'
     ];
-    const frogSounds = frogSoundFiles.map(file => {
-      const audio = new Audio(file);
-      audio.preload = 'auto';
-      audio.volume = 0.6;
-      return audio;
-    });
+    let frogSounds = [];
+    function loadFrogSounds() {
+      if (frogSounds.length) return;
+      frogSounds = frogSoundFiles.map(file => {
+        const audio = new Audio(file);
+        audio.preload = 'auto';
+        audio.volume = 0.6;
+        return audio;
+      });
+    }
+    ['pointerdown', 'keydown'].forEach(ev => window.addEventListener(ev, loadFrogSounds, { once: true, passive: true }));
+
+    // Activation au clavier (Entrée / Espace) des grenouilles cliquables
+    function frogKey(e, fn) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fn(); }
+    }
+
     let lastSoundIndex = -1;
 
     function playFrogSound() {
       try {
+        loadFrogSounds();
         // Tirage aléatoire sans rejouer deux fois de suite le même son
         let idx;
         do {
@@ -1408,7 +1615,21 @@
       return frogQueue;
     }
 
+    function getNavH() {
+      const n = document.getElementById('siteNav');
+      return n ? n.offsetHeight : 70;
+    }
+    function updateNavH() {
+      document.documentElement.style.setProperty('--nav-h', getNavH() + 'px');
+    }
+    window.addEventListener('resize', updateNavH);
+
     function hopOnce(frog, fromX, fromY, toX, toY) {
+      if (reduceMotion) {
+        frog.style.left = `${toX}px`;
+        frog.style.top = `${toY}px`;
+        return Promise.resolve();
+      }
       const dx = toX - fromX;
       const dy = toY - fromY;
       const dist = Math.hypot(dx, dy);
@@ -1476,7 +1697,7 @@
 
     // Garde la grenouille visible (sous la barre de navigation, dans l'écran)
     function clampToViewportY(y) {
-      return Math.max(window.scrollY + 110, Math.min(y, window.scrollY + window.innerHeight - 100));
+      return Math.max(window.scrollY + getNavH() + 20, Math.min(y, window.scrollY + window.innerHeight - 100));
     }
 
     // Clic sur la mini-grenouille : bond vers un point au hasard de l'écran
@@ -1485,7 +1706,8 @@
       if (frogIsHopping) return;
       const maxX = document.documentElement.clientWidth - 70;
       const targetX = Math.max(10, Math.floor(Math.random() * maxX));
-      const targetY = window.scrollY + 100 + Math.floor(Math.random() * Math.max(100, window.innerHeight - 220));
+      const topMargin = getNavH() + 20;
+      const targetY = window.scrollY + topMargin + Math.floor(Math.random() * Math.max(100, window.innerHeight - topMargin - 120));
       runFrogTrip(() => hopTo(targetX, targetY));
     }
 
@@ -1555,7 +1777,7 @@
         const x = pad.left + window.scrollX + pad.width / 2 - 30;
         const y = pad.top + window.scrollY + pad.height / 2 - 44;
         await hopTo(x, y);
-        ['pondRipple1', 'pondRipple2'].forEach((id, i) => {
+        if (!reduceMotion) ['pondRipple1', 'pondRipple2'].forEach((id, i) => {
           document.getElementById(id).animate(
             [{ transform: 'scale(0.5)', opacity: 0.9 }, { transform: 'scale(1.7)', opacity: 0 }],
             { duration: 1000, delay: i * 250, easing: 'ease-out' }
@@ -1591,13 +1813,37 @@
       });
     }
 
-    function toggleLanguage() {
-      currentLang = currentLang === 'fr' ? 'en' : 'fr';
+    // ---------- Langue : détection, mémorisation, application ----------
+    function detectLanguage() {
+      try {
+        const saved = localStorage.getItem('lang');
+        if (saved === 'fr' || saved === 'en') return saved;
+      } catch (e) {}
+      // Navigateur non français : le site s'ouvre en anglais (le choix FR/EN reste possible et mémorisé)
+      return (navigator.language || 'fr').toLowerCase().startsWith('fr') ? 'fr' : 'en';
+    }
+
+    function whatsappUrl() {
+      const msg = currentLang === 'fr'
+        ? 'Bonjour ! Je souhaite en savoir plus sur vos cours de français.'
+        : "Hello! I'd like to know more about your French lessons.";
+      return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+    }
+
+    function applyLanguage() {
+      document.documentElement.lang = currentLang;
       document.getElementById('pillFr').classList.toggle('active', currentLang === 'fr');
       document.getElementById('pillEn').classList.toggle('active', currentLang === 'en');
 
       document.querySelectorAll('[data-fr]').forEach(el => {
         el.innerHTML = el.getAttribute(`data-${currentLang}`);
+      });
+      document.querySelectorAll('[data-ph-fr]').forEach(el => {
+        el.placeholder = el.getAttribute(`data-ph-${currentLang}`);
+      });
+      ['waCard', 'waFloat'].forEach(id => {
+        const a = document.getElementById(id);
+        if (a) a.href = whatsappUrl();
       });
       refreshFrogBubble();
 
@@ -1606,7 +1852,24 @@
       } else {
         showResult();
       }
+      updateNavH();
     }
+
+    function toggleLanguage() {
+      currentLang = currentLang === 'fr' ? 'en' : 'fr';
+      try { localStorage.setItem('lang', currentLang); } catch (e) {}
+      applyLanguage();
+    }
+
+    // ---------- Menu téléphone ----------
+    function toggleNav(force) {
+      const nav = document.getElementById('siteNav');
+      const open = typeof force === 'boolean' ? force : !nav.classList.contains('open');
+      nav.classList.toggle('open', open);
+      document.getElementById('navBurger').setAttribute('aria-expanded', String(open));
+    }
+    document.querySelectorAll('#navLinks a').forEach(a => a.addEventListener('click', () => toggleNav(false)));
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') toggleNav(false); });
 
     // Quiz en 12 questions (A1:3, A2:3, B1:3, B2:2, C1:1)
     const quizData = [
@@ -1887,6 +2150,11 @@
           ? "Avouez, vous avez un pass secret avec l'Académie Française ? Même Jean-Michel la Grenouille n'ose plus rien vous corriger !"
           : "Admit it, do you have a VIP pass with the Académie Française? Even Jean-Michel the Frog doesn't dare correct you anymore!";
       }
+
+      // Niveau estimé (échelle A1–C1) : affiché et ajouté au champ « Niveau » du formulaire
+      const lvl = score <= 3 ? 'A1' : score <= 6 ? 'A2' : score <= 9 ? 'B1' : score <= 11 ? 'B2' : 'C1';
+      document.getElementById('resultLevel').innerText = currentLang === 'fr' ? `Niveau estimé : ${lvl}` : `Estimated level: ${lvl}`;
+      lastEstimatedProfile += currentLang === 'fr' ? ` — niveau estimé ${lvl}` : ` — estimated level ${lvl}`;
     }
 
     // ---------- Grille des créneaux (7 jours x matin / après-midi / soir) ----------
@@ -2079,7 +2347,15 @@
     buildSlotsGrid();
     document.getElementById('userMotif').value = 'info'; // motif par défaut
     handleMotifChange();
-    loadQuestion();
+    currentLang = detectLanguage();
+    applyLanguage();   // applique la langue, charge la première question du quiz, mesure le menu
+
+    // Le bouton WhatsApp flottant se cache quand le formulaire est à l'écran
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(entries => {
+        document.getElementById('waFloat').classList.toggle('hidden', entries[0].isIntersecting);
+      }, { threshold: 0.05 }).observe(document.getElementById('contact'));
+    }
   </script>
 </body>
 </html>
