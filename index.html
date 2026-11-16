@@ -1367,88 +1367,90 @@
     <div class="contact-grid">
       <div class="contact-card">
         <h3 style="margin-bottom: 1.2rem;" data-fr="✉️ Me contacter / Demander un devis" data-en="✉️ Contact me / Request a Quote">✉️ Me contacter / Demander un devis</h3>
-        <form id="contactForm" onsubmit="handleFormSubmit(event)">
-          <div class="form-group">
-            <label for="userMotif" data-fr="Motif de votre demande" data-en="Reason for your request">Motif de votre demande</label>
-            <select id="userMotif" onchange="handleMotifChange()" autocomplete="off" required>
-              <option value="info" selected data-fr="Demande d'information" data-en="Information request">Demande d'information</option>
-              <option value="reserver" data-fr="Réserver un créneau" data-en="Book a time slot">Réserver un créneau</option>
-              <option value="cours" data-fr="Commencer les cours de français" data-en="Start French lessons">Commencer les cours de français</option>
-              <option value="devis" data-fr="Demande de devis" data-en="Quote request">Demande de devis</option>
-            </select>
-          </div>
+       
+        <form id="contactForm" action="https://formspree.io/f/xrpqpjbz" method="POST" onsubmit="handleFormSubmit(event)">
+  <div class="form-group">
+    <label for="userMotif" data-fr="Motif de votre demande" data-en="Reason for your request">Motif de votre demande</label>
+    <select id="userMotif" name="motif" onchange="handleMotifChange()" autocomplete="off" required>
+      <option value="info" selected data-fr="Demande d'information" data-en="Information request">Demande d'information</option>
+      <option value="reserver" data-fr="Réserver un créneau" data-en="Book a time slot">Réserver un créneau</option>
+      <option value="cours" data-fr="Commencer les cours de français" data-en="Start French lessons">Commencer les cours de français</option>
+      <option value="devis" data-fr="Demande de devis" data-en="Quote request">Demande de devis</option>
+    </select>
+  </div>
 
-          <!-- Champs dynamiques si "Réserver un créneau" ou "Commencer les cours de français" -->
-          <div id="coursFields" class="conditional-fields">
-            <div class="form-group">
-              <label for="userFormat" data-fr="Format préféré" data-en="Preferred Format">Format préféré</label>
-              <select id="userFormat">
-                <option value="Cours individuel en ligne" data-fr="Cours individuel en ligne" data-en="1-on-1 Online Lessons">Cours individuel en ligne</option>
-                <option value="Cours en groupe en ligne (4+ élèves)" data-fr="Cours en groupe en ligne (4+ élèves)" data-en="Online Group Lessons (4+ students)">Cours en groupe en ligne (4+ élèves)</option>
-              </select>
-            </div>
-          </div>
+  <!-- Champs dynamiques si "Réserver un créneau" ou "Commencer les cours de français" -->
+  <div id="coursFields" class="conditional-fields">
+    <div class="form-group">
+      <label for="userFormat" data-fr="Format préféré" data-en="Preferred Format">Format préféré</label>
+      <select id="userFormat" name="format">
+        <option value="Cours individuel en ligne" data-fr="Cours individuel en ligne" data-en="1-on-1 Online Lessons">Cours individuel en ligne</option>
+        <option value="Cours en groupe en ligne (4+ élèves)" data-fr="Cours en groupe en ligne (4+ élèves)" data-en="Online Group Lessons (4+ students)">Cours en groupe en ligne (4+ élèves)</option>
+      </select>
+    </div>
+  </div>
 
-          <!-- Champs dynamiques si "Réserver un créneau" : grille jours x périodes -->
-          <div id="slotsFields" class="conditional-fields">
-            <span class="slots-title" data-fr="Choisissez vos créneaux (plusieurs choix possibles)" data-en="Choose your time slots (multiple choices allowed)">Choisissez vos créneaux (plusieurs choix possibles)</span>
-            <div class="slots-grid" id="slotsGrid"></div>
-          </div>
+  <!-- Champs dynamiques si "Réserver un créneau" : grille jours x périodes -->
+  <div id="slotsFields" class="conditional-fields">
+    <span class="slots-title" data-fr="Choisissez vos créneaux (plusieurs choix possibles)" data-en="Choose your time slots (multiple choices allowed)">Choisissez vos créneaux (plusieurs choix possibles)</span>
+    <div class="slots-grid" id="slotsGrid"></div>
+  </div>
 
-          <!-- Champs dynamiques si "Demande de devis" -->
-          <div id="devisFields" class="conditional-fields">
-            <div class="form-row">
-              <div class="form-group">
-                <label for="userNationality" data-fr="Nationalité" data-en="Nationality">Nationalité</label>
-                <input type="text" id="userNationality" placeholder="Ex: Italienne, Égyptienne..." data-ph-fr="Ex: Italienne, Égyptienne..." data-ph-en="E.g. Italian, Egyptian...">
-              </div>
-              <div class="form-group">
-                <label for="userResidence" data-fr="Lieu de résidence" data-en="Country of residence">Lieu de résidence</label>
-                <input type="text" id="userResidence" placeholder="Ex: Le Caire, Rome..." data-ph-fr="Ex: Le Caire, Rome..." data-ph-en="E.g. Cairo, Rome...">
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="userCurrency" data-fr="Devise souhaitée" data-en="Preferred Currency">Devise souhaitée</label>
-              <input type="text" id="userCurrency" placeholder="Ex: EUR, EGP, USD..." data-ph-fr="Ex: EUR, EGP, USD..." data-ph-en="E.g. EUR, EGP, USD...">
-            </div>
-          </div>
+  <!-- Champs dynamiques si "Demande de devis" -->
+  <div id="devisFields" class="conditional-fields">
+    <div class="form-row">
+      <div class="form-group">
+        <label for="userNationality" data-fr="Nationalité" data-en="Nationality">Nationalité</label>
+        <input type="text" id="userNationality" name="nationalite" placeholder="Ex: Italienne, Égyptienne..." data-ph-fr="Ex: Italienne, Égyptienne..." data-ph-en="E.g. Italian, Egyptian...">
+      </div>
+      <div class="form-group">
+        <label for="userResidence" data-fr="Lieu de résidence" data-en="Country of residence">Lieu de résidence</label>
+        <input type="text" id="userResidence" name="residence" placeholder="Ex: Le Caire, Rome..." data-ph-fr="Ex: Le Caire, Rome..." data-ph-en="E.g. Cairo, Rome...">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="userCurrency" data-fr="Devise souhaitée" data-en="Preferred Currency">Devise souhaitée</label>
+      <input type="text" id="userCurrency" name="devise" placeholder="Ex: EUR, EGP, USD..." data-ph-fr="Ex: EUR, EGP, USD..." data-ph-en="E.g. EUR, EGP, USD...">
+    </div>
+  </div>
 
-          <div class="form-row">
-            <div class="form-group">
-              <label for="userName" data-fr="Nom / Prénom" data-en="Name">Nom / Prénom</label>
-              <input type="text" id="userName" required autocomplete="name" placeholder="Ex: Sarah" data-ph-fr="Ex: Sarah" data-ph-en="E.g. Sarah">
-            </div>
-            <div class="form-group">
-              <label for="userAge" data-fr="Âge" data-en="Age">Âge</label>
-              <input type="number" id="userAge" min="5" max="99" placeholder="Ex: 28" data-ph-fr="Ex: 28" data-ph-en="E.g. 28">
-            </div>
-          </div>
+  <div class="form-row">
+    <div class="form-group">
+      <label for="userName" data-fr="Nom / Prénom" data-en="Name">Nom / Prénom</label>
+      <input type="text" id="userName" name="nom" required autocomplete="name" placeholder="Ex: Sarah" data-ph-fr="Ex: Sarah" data-ph-en="E.g. Sarah">
+    </div>
+    <div class="form-group">
+      <label for="userAge" data-fr="Âge" data-en="Age">Âge</label>
+      <input type="number" id="userAge" name="age" min="5" max="99" placeholder="Ex: 28" data-ph-fr="Ex: 28" data-ph-en="E.g. 28">
+    </div>
+  </div>
 
-          <div class="form-row">
-            <div class="form-group">
-              <label for="userEmail" data-fr="Email" data-en="Email">Email</label>
-              <input type="email" id="userEmail" required autocomplete="email" placeholder="sarah@gmail.com" data-ph-fr="sarah@gmail.com" data-ph-en="sarah@gmail.com">
-            </div>
-            <div class="form-group">
-              <label for="userLevel" data-fr="Niveau de français" data-en="French level">Niveau de français</label>
-              <input type="text" id="userLevel" placeholder="Ex: Débutant / Intermédiaire" data-ph-fr="Ex: Débutant / Intermédiaire" data-ph-en="E.g. Beginner / Intermediate">
-            </div>
-          </div>
+  <div class="form-row">
+    <div class="form-group">
+      <label for="userEmail" data-fr="Email" data-en="Email">Email</label>
+      <input type="email" id="userEmail" name="email" required autocomplete="email" placeholder="sarah@gmail.com" data-ph-fr="sarah@gmail.com" data-ph-en="sarah@gmail.com">
+    </div>
+    <div class="form-group">
+      <label for="userLevel" data-fr="Niveau de français" data-en="French level">Niveau de français</label>
+      <input type="text" id="userLevel" name="niveau" placeholder="Ex: Débutant / Intermédiaire" data-ph-fr="Ex: Débutant / Intermédiaire" data-ph-en="E.g. Beginner / Intermediate">
+    </div>
+  </div>
 
-          <div class="form-group">
-            <label for="userMessage" data-fr="Votre message" data-en="Your message">Votre message</label>
-            <textarea id="userMessage" rows="3" placeholder="Bonjour ! Je souhaite..." data-ph-fr="Bonjour ! Je souhaite..." data-ph-en="Hello! I would like..."></textarea>
-          </div>
+  <div class="form-group">
+    <label for="userMessage" data-fr="Votre message" data-en="Your message">Votre message</label>
+    <textarea id="userMessage" name="message" rows="3" placeholder="Bonjour ! Je souhaite..." data-ph-fr="Bonjour ! Je souhaite..." data-ph-en="Hello! I would like..."></textarea>
+  </div>
 
-          <!-- Champ piège anti-spam (invisible pour les humains) -->
-          <div class="hp-field" aria-hidden="true">
-            <label for="userWebsite">Ne pas remplir</label>
-            <input type="text" id="userWebsite" name="_gotcha" tabindex="-1" autocomplete="off">
-          </div>
+  <!-- Champ piège anti-spam (invisible pour les humains) -->
+  <div class="hp-field" aria-hidden="true">
+    <label for="userWebsite">Ne pas remplir</label>
+    <input type="text" id="userWebsite" name="_gotcha" tabindex="-1" autocomplete="off">
+  </div>
 
-          <button type="submit" id="submitBtn" class="btn btn-primary" style="width: 100%;" data-fr="Envoyer ma demande" data-en="Send Request">Envoyer ma demande</button>
-          <div id="formFeedback" class="form-feedback"></div>
-        </form>
+  <button type="submit" id="submitBtn" class="btn btn-primary" style="width: 100%;" data-fr="Envoyer ma demande" data-en="Send Request">Envoyer ma demande</button>
+  <div id="formFeedback" class="form-feedback"></div>
+</form>
+        
       </div>
 
       <div class="contact-card" style="display: flex; flex-direction: column; justify-content: space-between; gap: 1.5rem;">
@@ -2265,83 +2267,86 @@
       feedback.innerText = message;
     }
 
-    async function handleFormSubmit(event) {
-      event.preventDefault();
+   async function handleFormSubmit(event) {
+  event.preventDefault();
 
-      const motifSelect = document.getElementById('userMotif');
-      const motif = motifSelect.value;
-      const motifLabel = motifSelect.options[motifSelect.selectedIndex].getAttribute('data-fr');
-      const name = document.getElementById('userName').value.trim();
+  const motifSelect = document.getElementById('userMotif');
+  const motif = motifSelect.value;
+  const motifLabel = motifSelect.options[motifSelect.selectedIndex].getAttribute('data-fr');
+  const name = document.getElementById('userName').value.trim();
 
-      // Réserver un créneau : au moins un créneau coché
-      let slotsSummary = '';
-      if (motif === 'reserver') {
-        slotsSummary = getSelectedSlotsSummary();
-        if (!slotsSummary) {
-          showFeedback(currentLang === 'fr'
-            ? 'Merci de cocher au moins un créneau (jour + moment de la journée).'
-            : 'Please select at least one time slot (day + time of day).', true);
-          return;
-        }
-      }
-
-      // Endpoint non configuré : on ne simule pas un envoi réussi
-      if (FORMSPREE_ENDPOINT.includes('VOTRE_ID')) {
-        showFeedback(currentLang === 'fr'
-          ? "Le formulaire n'est pas encore relié à une adresse email. Écrivez-moi sur WhatsApp en attendant !"
-          : 'The form is not connected to an email address yet. Please message me on WhatsApp in the meantime!', true);
-        return;
-      }
-
-      const payload = {
-        'Motif': motifLabel,
-        'Nom / Prénom': name,
-        'Âge': document.getElementById('userAge').value,
-        'Email': document.getElementById('userEmail').value.trim(),
-        'Niveau de français': document.getElementById('userLevel').value.trim(),
-        'Message': document.getElementById('userMessage').value.trim(),
-        '_gotcha': document.getElementById('userWebsite').value,
-        '_subject': `Atelier du Français — ${motifLabel} (${name})`
-      };
-
-      if (motif === 'cours' || motif === 'reserver') {
-        payload['Format préféré'] = document.getElementById('userFormat').value;
-      }
-      if (motif === 'reserver') {
-        payload['Créneaux souhaités (heure du Caire)'] = slotsSummary;
-      }
-      if (motif === 'devis') {
-        payload['Nationalité'] = document.getElementById('userNationality').value.trim();
-        payload['Lieu de résidence'] = document.getElementById('userResidence').value.trim();
-        payload['Devise souhaitée'] = document.getElementById('userCurrency').value.trim();
-      }
-
-      const submitBtn = document.getElementById('submitBtn');
-      submitBtn.disabled = true;
-
-      try {
-        const response = await fetch(FORMSPREE_ENDPOINT, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-
-        if (!response.ok) throw new Error('HTTP ' + response.status);
-
-        showFeedback(currentLang === 'fr'
-          ? `Merci ${name} ! Votre demande a bien été envoyée, je vais revenir vers vous très vite ! 🐸`
-          : `Thank you ${name}! Your request has been sent, I will get back to you very soon! 🐸`, false);
-        document.getElementById('contactForm').reset();
-        handleMotifChange();
-        frogReplies();
-      } catch (err) {
-        showFeedback(currentLang === 'fr'
-          ? "Oups, l'envoi a échoué. Réessayez ou écrivez-moi sur WhatsApp."
-          : 'Oops, sending failed. Please try again or message me on WhatsApp.', true);
-      } finally {
-        submitBtn.disabled = false;
-      }
+  // Réserver un créneau : au moins un créneau coché
+  let slotsSummary = '';
+  if (motif === 'reserver') {
+    slotsSummary = getSelectedSlotsSummary();
+    if (!slotsSummary) {
+      showFeedback(currentLang === 'fr'
+        ? 'Merci de cocher au moins un créneau (jour + moment de la journée).'
+        : 'Please select at least one time slot (day + time of day).', true);
+      return;
     }
+  }
+
+  // Remplacez par votre endpoint Formspree (ex: 'https://formspree.io/f/xrpqpjbz')
+  const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xrpqpjbz';
+
+  // Endpoint non configuré : on ne simule pas un envoi réussi
+  if (FORMSPREE_ENDPOINT.includes('VOTRE_ID')) {
+    showFeedback(currentLang === 'fr'
+      ? "Le formulaire n'est pas encore relié à une adresse email. Écrivez-moi sur WhatsApp en attendant !"
+      : 'The form is not connected to an email address yet. Please message me on WhatsApp in the meantime!', true);
+    return;
+  }
+
+  const payload = {
+    'Motif': motifLabel,
+    'Nom / Prénom': name,
+    'Âge': document.getElementById('userAge').value,
+    'Email': document.getElementById('userEmail').value.trim(),
+    'Niveau de français': document.getElementById('userLevel').value.trim(),
+    'Message': document.getElementById('userMessage').value.trim(),
+    '_gotcha': document.getElementById('userWebsite').value,
+    '_subject': `Atelier du Français — ${motifLabel} (${name})`
+  };
+
+  if (motif === 'cours' || motif === 'reserver') {
+    payload['Format préféré'] = document.getElementById('userFormat').value;
+  }
+  if (motif === 'reserver') {
+    payload['Créneaux souhaités (heure du Caire)'] = slotsSummary;
+  }
+  if (motif === 'devis') {
+    payload['Nationalité'] = document.getElementById('userNationality').value.trim();
+    payload['Lieu de résidence'] = document.getElementById('userResidence').value.trim();
+    payload['Devise souhaitée'] = document.getElementById('userCurrency').value.trim();
+  }
+
+  const submitBtn = document.getElementById('submitBtn');
+  submitBtn.disabled = true;
+
+  try {
+    const response = await fetch(FORMSPREE_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+
+    if (!response.ok) throw new Error('HTTP ' + response.status);
+
+    showFeedback(currentLang === 'fr'
+      ? `Merci ${name} ! Votre demande a bien été envoyée, je vais revenir vers vous très vite ! 🐸`
+      : `Thank you ${name}! Your request has been sent, I will get back to you very soon! 🐸`, false);
+    document.getElementById('contactForm').reset();
+    handleMotifChange();
+    frogReplies();
+  } catch (err) {
+    showFeedback(currentLang === 'fr'
+      ? "Oups, l'envoi a échoué. Réessayez ou écrivez-moi sur WhatsApp."
+      : 'Oops, sending failed. Please try again or message me on WhatsApp.', true);
+  } finally {
+    submitBtn.disabled = false;
+  }
+}
 
     // ---------- Initialisation ----------
     buildSlotsGrid();
