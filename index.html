@@ -25,6 +25,7 @@
       --coral: #FF5A5F;
       --yellow: #FFD166;
       --mint: #06D6A0;
+      --mint-soft: #CDEFE2;
       --blue: #118AB2;
       --coral-dark: #D1343A;
       --cream: #FFFDF7;
@@ -47,7 +48,7 @@
 
     body {
       font-family: 'Nunito', sans-serif;
-      background-color: var(--cream);
+      background-color: var(--mint-soft);
       color: var(--navy);
       line-height: 1.6;
       overflow-x: hidden;
@@ -58,6 +59,22 @@
       font-family: 'Fredoka', sans-serif;
       font-weight: 700;
       color: var(--navy);
+    }
+
+    /* Colonne centrale : marges vertes sur les côtés des grands écrans, aucune marge sur téléphone et tablette */
+    .page {
+      background: var(--cream);
+    }
+
+    @media (min-width: 901px) {
+      .page {
+        width: calc(100% - 2 * clamp(16px, 4vw, 72px));
+        max-width: 1240px;
+        margin: 0 auto;
+        border-left: 3px solid var(--navy);
+        border-right: 3px solid var(--navy);
+        box-shadow: 0 0 40px rgba(30, 41, 59, 0.14);
+      }
     }
 
     section {
@@ -226,7 +243,7 @@
     .mini-frog {
       position: absolute;
       top: calc(var(--nav-h, 70px) + 20px);
-      right: 4%;
+      right: calc(var(--page-gutter, 0px) + 16px);
       width: 60px;
       height: 60px;
       z-index: 95;
@@ -268,6 +285,13 @@
       border-width: 11px 11px 0;
       border-style: solid;
       border-color: var(--navy) transparent transparent transparent;
+    }
+
+    .frog-speech.below::after {
+      top: auto;
+      bottom: 100%;
+      border-width: 0 11px 11px;
+      border-color: transparent transparent var(--navy) transparent;
     }
 
     @keyframes speechPop {
@@ -1014,6 +1038,218 @@
         grid-column: 1 / -1;
       }
     }
+    /* Boutons de partage, liens réseaux sociaux */
+    .ic {
+      width: 22px;
+      height: 22px;
+      flex-shrink: 0;
+      margin-right: 0.45rem;
+    }
+
+    .share-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      background: var(--white);
+      color: var(--navy);
+      border: 2px solid var(--navy);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background-color 0.18s, transform 0.18s;
+    }
+
+    .share-toggle .ic { margin-right: 0; width: 24px; height: 24px; }
+    .share-toggle:hover, .share-toggle[aria-expanded="true"] { background: var(--yellow); }
+    .share-toggle:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
+
+    .share-panel {
+      position: absolute;
+      top: 100%;
+      right: 5%;
+      margin-top: 8px;
+      width: min(260px, 90vw);
+      background: var(--white);
+      border: 3px solid var(--navy);
+      border-radius: 16px;
+      box-shadow: 5px 5px 0px var(--yellow);
+      padding: 0.4rem;
+      z-index: 120;
+    }
+
+    .share-panel[hidden] { display: none; }
+
+    .share-panel-title {
+      padding: 0.4rem 0.8rem 0.3rem;
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: #475569;
+    }
+
+    .share-item {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      min-height: 44px;
+      padding: 0 0.8rem;
+      background: none;
+      border: none;
+      border-radius: 10px;
+      color: var(--navy);
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 1rem;
+      text-align: left;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .share-item:hover, .share-item:focus-visible { background: #FFF3CC; outline: none; }
+    .share-item[hidden] { display: none; }
+
+    .share-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40px;
+      padding: 0.4rem 1rem;
+      background: var(--white);
+      color: var(--navy);
+      border: 2px solid var(--navy);
+      border-radius: 50px;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 0.9rem;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background-color 0.18s, transform 0.18s;
+    }
+
+    .share-btn:hover {
+      background: var(--yellow);
+      transform: translateY(-2px);
+    }
+
+    .share-btn:focus-visible {
+      outline: 3px solid var(--blue);
+      outline-offset: 3px;
+    }
+
+    .social-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.8rem;
+    }
+
+    /* Case à cocher « nouvelles » */
+    .consent-check {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.7rem;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .consent-check input {
+      width: 22px;
+      height: 22px;
+      margin-top: 0.1rem;
+      flex-shrink: 0;
+      accent-color: var(--coral-dark);
+      cursor: pointer;
+    }
+
+    .form-note {
+      font-size: 0.85rem;
+      color: #64748B;
+      margin-top: -6px;
+    }
+
+    .form-note a, .privacy-box a {
+      color: var(--blue);
+      font-weight: 700;
+    }
+
+    /* Mentions de confidentialité */
+    .privacy-section {
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+    }
+
+    .privacy-box {
+      max-width: 820px;
+      margin: 0 auto;
+      background: var(--white);
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .privacy-box summary {
+      cursor: pointer;
+      padding: 1.1rem 1.5rem;
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 600;
+      font-size: 1.1rem;
+      min-height: 48px;
+    }
+
+    .privacy-box[open] summary {
+      border-bottom: 2px dashed var(--border);
+    }
+
+    .privacy-content {
+      padding: 1.2rem 1.5rem 1.6rem;
+      font-size: 0.97rem;
+    }
+
+    .privacy-content h4 {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 1.05rem;
+      margin: 1.2rem 0 0.3rem;
+    }
+
+    .privacy-content h4:first-of-type { margin-top: 0.6rem; }
+    .privacy-content p, .privacy-content ul { margin-bottom: 0.5rem; }
+    .privacy-content ul { padding-left: 1.3rem; }
+    .privacy-updated { color: #64748B; font-size: 0.88rem; }
+
+    html[lang="fr"] .i18n-en,
+    html[lang="en"] .i18n-fr {
+      display: none;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.3rem 1.4rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .footer-links a {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.1rem;
+      min-height: 44px;
+      color: var(--white);
+      font-weight: 700;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .footer-links a:hover {
+      color: var(--yellow);
+    }
+
+    @media (max-width: 860px) {
+      footer { padding-bottom: 5rem; }
+    }
+
     /* Pas de cadre au clic ou au toucher sur les grenouilles ; le cadre reste pour la navigation au clavier */
     .mini-frog, .frog-svg {
       -webkit-tap-highlight-color: transparent;
@@ -1162,6 +1398,29 @@
 </head>
 <body>
 
+  <!-- Icônes (dessinées ici, réutilisées avec <use>) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <defs>
+      <linearGradient id="igGrad" x1="0" y1="1" x2="1" y2="0">
+        <stop offset="0" stop-color="#FEDA75"/><stop offset="0.35" stop-color="#FA7E1E"/>
+        <stop offset="0.6" stop-color="#D62976"/><stop offset="0.85" stop-color="#962FBF"/><stop offset="1" stop-color="#4F5BD5"/>
+      </linearGradient>
+    </defs>
+    <symbol id="ic-facebook" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="12" fill="#1877F2"/>
+      <path fill="#fff" d="M13.4 19.5v-6.3h2.1l.4-2.6h-2.5V9.1c0-.8.3-1.3 1.4-1.3H16V5.5c-.2 0-1-.1-1.9-.1-2 0-3.3 1.2-3.3 3.4v1.8H8.8v2.6h2v6.3z"/>
+    </symbol>
+    <symbol id="ic-instagram" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="12" fill="url(#igGrad)"/>
+      <rect x="6.2" y="6.2" width="11.6" height="11.6" rx="3.4" fill="none" stroke="#fff" stroke-width="1.6"/>
+      <circle cx="12" cy="12" r="2.8" fill="none" stroke="#fff" stroke-width="1.6"/>
+      <circle cx="15.4" cy="8.6" r="0.9" fill="#fff"/>
+    </symbol>
+    <symbol id="ic-share" viewBox="0 0 24 24">
+      <path d="M15 14l5-5-5-5M4 20v-7a4 4 0 0 1 4-4h12" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+  </svg>
+
   <!-- Mini-grenouille sauteuse interactive (60x60px, béret avec trait vertical) -->
   <svg id="miniFrog" class="mini-frog" viewBox="0 0 100 100" onclick="jumpMiniFrog()" onkeydown="frogKey(event, jumpMiniFrog)" role="button" tabindex="0" aria-label="Petite grenouille : cliquez pour la faire sauter" title="Croâ ! Clique-moi !">
     <path d="M50 14 L50 5" stroke="#1E293B" stroke-width="3.5" stroke-linecap="round"/>
@@ -1189,6 +1448,19 @@
       <a href="#preparation" data-fr="Préparation" data-en="Preparation">Préparation</a>
     </div>
     <div class="nav-right">
+      <div class="share-menu" id="shareMenu">
+        <button type="button" class="share-toggle" id="shareToggle" onclick="toggleShareMenu()" aria-expanded="false" aria-controls="sharePanel" aria-label="Partager le site / Share this site">
+          <svg class="ic" aria-hidden="true"><use href="#ic-share"/></svg>
+        </button>
+        <div class="share-panel" id="sharePanel" hidden>
+          <div class="share-panel-title" data-fr="Partager le site" data-en="Share this site">Partager le site</div>
+          <a id="shareWa" class="share-item" href="https://wa.me/?text=https%3A%2F%2Fatelierfrancais.club%2F" target="_blank" rel="noopener">WhatsApp</a>
+          <a id="shareFb" class="share-item" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fatelierfrancais.club%2F" target="_blank" rel="noopener">Facebook</a>
+          <a id="shareMail" class="share-item" href="mailto:" data-fr="E-mail" data-en="Email">E-mail</a>
+          <button type="button" class="share-item" onclick="copySiteLink(this)" data-fr="Copier le lien" data-en="Copy link">Copier le lien</button>
+          <button type="button" class="share-item" id="shareNative" onclick="nativeShare()" hidden data-fr="Plus d'options…" data-en="More options…">Plus d'options…</button>
+        </div>
+      </div>
       <button class="lang-btn" id="langToggle" onclick="toggleLanguage()" aria-label="Changer de langue / Change language">
         <span id="pillFr" class="lang-pill active">FR</span>
         <span id="pillEn" class="lang-pill">EN</span>
@@ -1199,6 +1471,8 @@
       </button>
     </div>
   </nav>
+
+  <div class="page">
 
   <!-- 1. HERO -->
   <section class="hero">
@@ -1440,6 +1714,12 @@
             <textarea id="userMessage" rows="3" placeholder="Bonjour ! Je souhaite..." data-ph-fr="Bonjour ! Je souhaite..." data-ph-en="Hello! I would like..."></textarea>
           </div>
 
+          <label class="consent-check" for="userNews">
+            <input type="checkbox" id="userNews">
+            <span data-fr="Je souhaite recevoir des nouvelles de l'Atelier du Français" data-en="I would like to receive news from L'Atelier du Français">Je souhaite recevoir des nouvelles de l'Atelier du Français</span>
+          </label>
+          <p class="form-note" data-fr="Vos données servent à répondre à votre demande. <a href='#confidentialite' onclick='openPrivacy(event)'>Confidentialité</a>" data-en="Your data is used to answer your request. <a href='#confidentialite' onclick='openPrivacy(event)'>Privacy</a>">Vos données servent à répondre à votre demande. <a href="#confidentialite" onclick="openPrivacy(event)">Confidentialité</a></p>
+
           <!-- Champ piège anti-spam (invisible pour les humains) -->
           <div class="hp-field" aria-hidden="true">
             <label for="userWebsite">Ne pas remplir</label>
@@ -1461,6 +1741,14 @@
           <h3 style="margin-bottom: 0.5rem;" data-fr="💬 Discussion rapide & InstaPay" data-en="💬 Quick Chat & InstaPay">💬 Discussion rapide & InstaPay</h3>
           <p style="font-size: 0.95rem; color: #475569;" data-fr="Une question urgente ou prêt(e) à régler par InstaPay / virement ?" data-en="Urgent question or ready to pay via InstaPay / bank transfer?">Une question urgente ou prêt(e) à régler par InstaPay / virement ?</p>
           <a id="waCard" href="https://wa.me/201222448069" target="_blank" rel="noopener" class="btn whatsapp-btn" data-fr="Écrire sur WhatsApp" data-en="Message on WhatsApp">Écrire sur WhatsApp</a>
+        </div>
+
+        <div style="border-top: 2px dashed #CBD5E1; padding-top: 1.5rem;">
+          <h3 style="margin-bottom: 0.3rem;" data-fr="🐸 Suivez l'Atelier" data-en="🐸 Follow the Atelier">🐸 Suivez l'Atelier</h3>
+          <div class="social-row">
+            <a class="share-btn" href="https://www.facebook.com/Imagine.AtelierFrancais" target="_blank" rel="noopener noreferrer"><svg class="ic" aria-hidden="true"><use href="#ic-facebook"/></svg>Facebook</a>
+            <a class="share-btn" href="https://www.instagram.com/Imagine.AtelierFrancais/" target="_blank" rel="noopener noreferrer"><svg class="ic" aria-hidden="true"><use href="#ic-instagram"/></svg>Instagram</a>
+          </div>
         </div>
       </div>
     </div>
@@ -1519,9 +1807,77 @@
     </div>
   </section>
 
+  <!-- MENTIONS DE CONFIDENTIALITÉ -->
+  <section class="privacy-section">
+    <details id="confidentialite" class="privacy-box">
+      <summary><span class="i18n i18n-fr">Mentions de confidentialité</span><span class="i18n i18n-en">Privacy notice</span></summary>
+
+      <div class="privacy-content i18n i18n-fr" lang="fr">
+        <p class="privacy-updated">Mise à jour : 22 novembre 2026</p>
+
+        <h4>Qui est responsable de vos données ?</h4>
+        <p>L'Atelier du Français. Pour toute question : <a href="mailto:info@atelierfrancais.club">info@atelierfrancais.club</a>.</p>
+
+        <h4>Quelles données, et pourquoi ?</h4>
+        <p>Quand vous remplissez le formulaire de contact, je reçois : votre motif, votre nom, votre email et, selon les cas, votre âge, votre niveau de français, votre message, votre format de cours préféré, vos créneaux souhaités, votre nationalité, votre lieu de résidence et votre devise souhaitée.</p>
+        <ul>
+          <li>Ces informations servent uniquement à répondre à votre demande.</li>
+          <li>Si vous cochez « Je souhaite recevoir des nouvelles de l'Atelier du Français », elles servent aussi à vous en envoyer. Vous pouvez retirer cet accord à tout moment.</li>
+        </ul>
+        <p>Le mini-test de niveau fonctionne dans votre navigateur : vos réponses ne sont pas enregistrées. Son résultat n'est transmis que si vous envoyez le formulaire avec le champ « Niveau de français » rempli.</p>
+
+        <h4>Combien de temps sont-elles gardées ?</h4>
+        <p>Je ne conserve vos coordonnées que si vous demandez à rester en contact ou à recevoir des nouvelles. Sinon, elles ne sont pas gardées une fois votre demande traitée.</p>
+
+        <h4>Qui les reçoit ?</h4>
+        <p>Moi, et Formspree, le service technique qui m'envoie par email les messages du formulaire. Formspree peut les conserver selon ses propres conditions. Je ne vends pas vos données et je ne les transmets à personne d'autre.</p>
+
+        <h4>Vos droits</h4>
+        <p>Vous pouvez demander l'accès à vos données, leur correction ou leur suppression, ou vous désinscrire des nouvelles, en écrivant à <a href="mailto:info@atelierfrancais.club">info@atelierfrancais.club</a>.</p>
+
+        <h4>Cookies et services extérieurs</h4>
+        <p>Ce site n'utilise ni cookie de suivi ni outil de statistiques. Il mémorise seulement votre choix de langue dans votre navigateur. Les polices de caractères sont chargées depuis Google Fonts. Les liens vers WhatsApp, Facebook et Instagram mènent vers des services extérieurs, qui ont leurs propres règles.</p>
+      </div>
+
+      <div class="privacy-content i18n i18n-en" lang="en">
+        <p class="privacy-updated">Last updated: 22 November 2026</p>
+
+        <h4>Who is responsible for your data?</h4>
+        <p>L'Atelier du Français. For any question: <a href="mailto:info@atelierfrancais.club">info@atelierfrancais.club</a>.</p>
+
+        <h4>What data, and why?</h4>
+        <p>When you fill in the contact form, I receive: your reason for contacting me, your name, your email and, depending on the case, your age, your level of French, your message, your preferred lesson format, your preferred time slots, your nationality, your place of residence and your preferred currency.</p>
+        <ul>
+          <li>This information is used only to answer your request.</li>
+          <li>If you tick "I would like to receive news from L'Atelier du Français", it is also used to send you news. You can withdraw this consent at any time.</li>
+        </ul>
+        <p>The mini level test runs in your browser: your answers are not saved. Its result is only sent if you submit the form with the "French level" field filled in.</p>
+
+        <h4>How long is it kept?</h4>
+        <p>I only keep your contact details if you ask to stay in touch or to receive news. Otherwise, they are not kept once your request has been dealt with.</p>
+
+        <h4>Who receives it?</h4>
+        <p>Me, and Formspree, the technical service that emails me the messages from the form. Formspree may keep them according to its own terms. I do not sell your data and I do not pass it on to anyone else.</p>
+
+        <h4>Your rights</h4>
+        <p>You can ask to access, correct or delete your data, or unsubscribe from the news, by writing to <a href="mailto:info@atelierfrancais.club">info@atelierfrancais.club</a>.</p>
+
+        <h4>Cookies and external services</h4>
+        <p>This site uses no tracking cookies and no analytics tool. It only remembers your language choice in your browser. Fonts are loaded from Google Fonts. Links to WhatsApp, Facebook and Instagram lead to external services, which have their own rules.</p>
+      </div>
+    </details>
+  </section>
+
   <footer>
+    <div class="footer-links">
+      <a href="https://www.facebook.com/Imagine.AtelierFrancais" target="_blank" rel="noopener noreferrer"><svg class="ic" aria-hidden="true"><use href="#ic-facebook"/></svg>Facebook</a>
+      <a href="https://www.instagram.com/Imagine.AtelierFrancais/" target="_blank" rel="noopener noreferrer"><svg class="ic" aria-hidden="true"><use href="#ic-instagram"/></svg>Instagram</a>
+      <a href="#confidentialite" onclick="openPrivacy(event)" data-fr="Confidentialité" data-en="Privacy">Confidentialité</a>
+      <a href="mailto:info@atelierfrancais.club">info@atelierfrancais.club</a>
+    </div>
     <p>© 2026 L'Atelier du Français — Fait avec ❤️ et beaucoup de café ☕</p>
   </footer>
+  </div><!-- /page -->
 
   <a id="waFloat" class="wa-float" href="https://wa.me/201222448069" target="_blank" rel="noopener" aria-label="WhatsApp">WhatsApp</a>
 
@@ -1611,6 +1967,7 @@
     let frogQueue = Promise.resolve();
 
     function runFrogTrip(fn) {
+      stopFrogHint();
       frogQueue = frogQueue.then(fn).catch(() => { frogIsHopping = false; });
       return frogQueue;
     }
@@ -1619,8 +1976,16 @@
       const n = document.getElementById('siteNav');
       return n ? n.offsetHeight : 70;
     }
+    function pageBounds() {
+      const pg = document.querySelector('.page');
+      if (!pg) return [0, document.documentElement.clientWidth];
+      const r = pg.getBoundingClientRect();
+      return [r.left, r.right];
+    }
     function updateNavH() {
-      document.documentElement.style.setProperty('--nav-h', getNavH() + 'px');
+      const root = document.documentElement;
+      root.style.setProperty('--nav-h', getNavH() + 'px');
+      root.style.setProperty('--page-gutter', pageBounds()[0] + 'px');
     }
     window.addEventListener('resize', updateNavH);
 
@@ -1675,7 +2040,8 @@
       // Si elle est très loin et hors de l'écran, elle arrive depuis le haut de l'écran
       const offscreen = rect.bottom < 0 || rect.top > window.innerHeight || rect.right < 0 || rect.left > window.innerWidth;
       if (offscreen && Math.hypot(targetX - curX, targetY - curY) > 1200) {
-        curX = Math.max(10, Math.min(targetX + (Math.random() - 0.5) * 300, document.documentElement.clientWidth - 70));
+        const [pl, pr] = pageBounds();
+        curX = Math.max(pl + 10, Math.min(targetX + (Math.random() - 0.5) * 300, pr - 70));
         curY = Math.max(80, targetY - window.innerHeight - 150);
       }
       frog.style.right = 'auto';
@@ -1702,10 +2068,11 @@
 
     // Clic sur la mini-grenouille : bond vers un point au hasard de l'écran
     function jumpMiniFrog() {
+      stopFrogHint();
       playFrogSound();
       if (frogIsHopping) return;
-      const maxX = document.documentElement.clientWidth - 70;
-      const targetX = Math.max(10, Math.floor(Math.random() * maxX));
+      const [pl, pr] = pageBounds();
+      const targetX = pl + 10 + Math.floor(Math.random() * Math.max(1, pr - pl - 80));
       const topMargin = getNavH() + 20;
       const targetY = window.scrollY + topMargin + Math.floor(Math.random() * Math.max(100, window.innerHeight - topMargin - 120));
       runFrogTrip(() => hopTo(targetX, targetY));
@@ -1715,6 +2082,7 @@
     const frogMessages = {
       bravo: { fr: "Bravo, bien joué ! 🎉", en: "Well done! 🎉" },
       reply: { fr: "Je vous réponds aussi vite que possible !", en: "I'll get back to you as soon as possible!" },
+      hint: { fr: "Cliquez sur moi !", en: "Click me!" },
       pond1: { fr: "Prêt(e) à apprendre le français ?", en: "Ready to learn French?" },
       pond2: { fr: "On va vivre de grandes aventures !", en: "We're going to have great adventures!" },
       pondJoke: {
@@ -1728,23 +2096,28 @@
     let frogBubbleKey = null;
     let frogBubbleTimer = null;
 
+    let frogBubblePlacement = 'above';
+
     function positionFrogBubble() {
       const bubble = document.getElementById('frogSpeech');
       const frog = document.getElementById('miniFrog');
-      const fl = parseFloat(frog.style.left) || 0;
-      const ft = parseFloat(frog.style.top) || 0;
-      const vw = document.documentElement.clientWidth;
+      const r = frog.getBoundingClientRect();
+      const fl = r.left + window.scrollX;
+      const ft = r.top + window.scrollY;
+      const [pl, pr] = pageBounds();
       const bw = bubble.offsetWidth;
       const bh = bubble.offsetHeight;
-      const left = Math.min(Math.max(8, fl + 30 - bw / 2), vw - bw - 8);
+      const left = Math.min(Math.max(pl + 8, fl + 30 - bw / 2), pr - bw - 8);
       bubble.style.left = `${left}px`;
-      bubble.style.top = `${ft - bh - 16}px`;
+      bubble.style.top = frogBubblePlacement === 'below' ? `${ft + 60 + 14}px` : `${ft - bh - 16}px`;
       bubble.style.setProperty('--tail', `${Math.max(20, Math.min(fl + 30 - left, bw - 20))}px`);
     }
 
-    function showFrogBubble(key, duration = 7000) {
+    function showFrogBubble(key, duration = 7000, placement = 'above') {
       const bubble = document.getElementById('frogSpeech');
       frogBubbleKey = key;
+      frogBubblePlacement = placement;
+      bubble.classList.toggle('below', placement === 'below');
       bubble.style.display = 'none';
       bubble.textContent = frogMessages[key][currentLang];
       bubble.style.display = 'block';
@@ -1766,6 +2139,45 @@
       clearTimeout(frogBubbleTimer);
       frogBubbleKey = null;
       document.getElementById('frogSpeech').style.display = 'none';
+    }
+
+
+    // ---------- Invitation à cliquer sur la petite grenouille ----------
+    // Une bulle « Cliquez sur moi ! » puis quelques petits tremblements, jusqu'au premier clic
+    let frogHintActive = true;
+    let frogHintCount = 0;
+    let frogHintTimer = null;
+
+    function stopFrogHint() {
+      frogHintActive = false;
+      clearTimeout(frogHintTimer);
+      if (frogBubbleKey === 'hint') hideFrogBubble();
+    }
+
+    function isFrogInView() {
+      const r = document.getElementById('miniFrog').getBoundingClientRect();
+      return r.top >= getNavH() && r.bottom <= window.innerHeight && r.left >= 0 && r.right <= window.innerWidth;
+    }
+
+    function frogHintTick() {
+      if (!frogHintActive) return;
+      if (frogIsHopping || frogBubbleKey || !isFrogInView()) {
+        frogHintTimer = setTimeout(frogHintTick, 3000);   // pas le bon moment : on réessaie
+        return;
+      }
+      if (frogHintCount === 0) {
+        showFrogBubble('hint', 6000, 'below');
+      } else if (!reduceMotion) {
+        document.getElementById('miniFrog').animate([
+          { transform: 'rotate(0deg) scale(1)' },
+          { transform: 'rotate(-14deg) scale(1.12)' },
+          { transform: 'rotate(12deg) scale(1.12)' },
+          { transform: 'rotate(-8deg) scale(1.08)' },
+          { transform: 'rotate(0deg) scale(1)' }
+        ], { duration: 900, easing: 'ease-in-out' });
+      }
+      frogHintCount++;
+      if (frogHintCount < 4) frogHintTimer = setTimeout(frogHintTick, 8000);
     }
 
     // ---------- Scénarios ----------
@@ -1823,6 +2235,79 @@
       return (navigator.language || 'fr').toLowerCase().startsWith('fr') ? 'fr' : 'en';
     }
 
+    // ---------- Partage du site ----------
+    function getShareUrl() {
+      // Adresse réelle de la page quand le site est en ligne ; adresse du domaine si la page est ouverte en local
+      return /^https?:$/.test(location.protocol) ? location.origin + location.pathname : 'https://atelierfrancais.club/';
+    }
+
+    function updateShareLinks() {
+      const url = getShareUrl();
+      const text = currentLang === 'fr'
+        ? "Découvrez L'Atelier du Français : des cours de français en ligne, avec le sourire !"
+        : "Check out L'Atelier du Français: online French lessons, with a smile!";
+      const wa = document.getElementById('shareWa');
+      const fb = document.getElementById('shareFb');
+      if (wa) wa.href = `https://wa.me/?text=${encodeURIComponent(text + ' ' + url)}`;
+      if (fb) fb.href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+      const mail = document.getElementById('shareMail');
+      if (mail) {
+        const subject = currentLang === 'fr' ? "L'Atelier du Français : cours de français en ligne" : "L'Atelier du Français: online French lessons";
+        mail.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(text + '\n' + url)}`;
+      }
+    }
+
+    async function copySiteLink(btn) {
+      const url = getShareUrl();
+      let ok = false;
+      try {
+        await navigator.clipboard.writeText(url);
+        ok = true;
+      } catch (e) {
+        try {
+          const t = document.createElement('textarea');
+          t.value = url;
+          t.style.position = 'fixed';
+          t.style.opacity = '0';
+          document.body.appendChild(t);
+          t.select();
+          ok = document.execCommand('copy');
+          t.remove();
+        } catch (e2) {}
+      }
+      btn.textContent = ok
+        ? (currentLang === 'fr' ? 'Lien copié ✓' : 'Link copied ✓')
+        : (currentLang === 'fr' ? 'Copie impossible' : 'Copy failed');
+      setTimeout(() => { btn.innerHTML = btn.getAttribute(`data-${currentLang}`); }, 2000);
+    }
+
+    function nativeShare() {
+      const text = currentLang === 'fr'
+        ? "Découvrez L'Atelier du Français : des cours de français en ligne, avec le sourire !"
+        : "Check out L'Atelier du Français: online French lessons, with a smile!";
+      if (navigator.share) navigator.share({ title: "L'Atelier du Français", text, url: getShareUrl() }).catch(() => {});
+    }
+
+    function toggleShareMenu(force) {
+      const panel = document.getElementById('sharePanel');
+      const open = typeof force === 'boolean' ? force : panel.hidden;
+      panel.hidden = !open;
+      document.getElementById('shareToggle').setAttribute('aria-expanded', String(open));
+      if (open) toggleNav(false);
+    }
+    document.addEventListener('click', e => {
+      if (!document.getElementById('shareMenu').contains(e.target)) toggleShareMenu(false);
+    });
+
+    // ---------- Mentions de confidentialité ----------
+    function openPrivacy(e) {
+      if (e) e.preventDefault();
+      const d = document.getElementById('confidentialite');
+      d.open = true;
+      d.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+    }
+    window.addEventListener('hashchange', () => { if (location.hash === '#confidentialite') openPrivacy(); });
+
     function whatsappUrl() {
       const msg = currentLang === 'fr'
         ? 'Bonjour ! Je souhaite en savoir plus sur vos cours de français.'
@@ -1845,6 +2330,7 @@
         const a = document.getElementById(id);
         if (a) a.href = whatsappUrl();
       });
+      updateShareLinks();
       refreshFrogBubble();
 
       if (currentQ < quizData.length) {
@@ -1867,9 +2353,10 @@
       const open = typeof force === 'boolean' ? force : !nav.classList.contains('open');
       nav.classList.toggle('open', open);
       document.getElementById('navBurger').setAttribute('aria-expanded', String(open));
+      if (open) toggleShareMenu(false);
     }
     document.querySelectorAll('#navLinks a').forEach(a => a.addEventListener('click', () => toggleNav(false)));
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') toggleNav(false); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') { toggleNav(false); toggleShareMenu(false); } });
 
     // Quiz en 12 questions (A1:3, A2:3, B1:3, B2:2, C1:1)
     const quizData = [
@@ -2301,7 +2788,8 @@
         'Niveau de français': document.getElementById('userLevel').value.trim(),
         'Message': document.getElementById('userMessage').value.trim(),
         '_gotcha': document.getElementById('userWebsite').value,
-        '_subject': `Atelier du Français — ${motifLabel} (${name})`
+        'Nouvelles de l\'Atelier': document.getElementById('userNews').checked ? 'Oui' : 'Non',
+        '_subject': `Atelier du Français — ${motifLabel} (${name})${document.getElementById('userNews').checked ? ' — veut des nouvelles' : ''}`
       };
 
       if (motif === 'cours' || motif === 'reserver') {
@@ -2349,6 +2837,10 @@
     handleMotifChange();
     currentLang = detectLanguage();
     applyLanguage();   // applique la langue, charge la première question du quiz, mesure le menu
+
+    if (location.hash === '#confidentialite') openPrivacy();
+    if (navigator.share) document.getElementById('shareNative').hidden = false;
+    frogHintTimer = setTimeout(frogHintTick, 2500);
 
     // Le bouton WhatsApp flottant se cache quand le formulaire est à l'écran
     if ('IntersectionObserver' in window) {
